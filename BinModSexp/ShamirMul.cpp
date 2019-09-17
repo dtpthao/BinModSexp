@@ -12,7 +12,6 @@ void ShamirDecomposit(big k, big a, big b, big X, big Y, big P)
 	divide(a, tmp2l, b);
 	copy(X, Y);
 	for (i = 0; i < len; i++) {
-		//power(Y, 2, P, Y);
 		multiply(Y, Y, Y);
 		divide(Y, P, P);
 	}

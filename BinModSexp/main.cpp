@@ -21,7 +21,7 @@ struct Result {
 	unsigned int c[5] = { 0 };
 };
 
-#define TEST	1000
+#define TEST	5000
 #define LIB		3
 
 void Test(csprng &Rng, big X, big P, Result &res)
@@ -30,7 +30,7 @@ void Test(csprng &Rng, big X, big P, Result &res)
 		Z1 = mirvar(0), Z2 = mirvar(0), Z3 = mirvar(0);
 	big k = mirvar(1), Y = mirvar(1);
 	
-	res.t[0] = res.t[1] = res.t[2] = 0;
+	res.t[0] = res.t[1] = res.t[2] = res.t[3] = 0;
 	big a = mirvar(1), b = mirvar(1);
 	for (int i = 0; i < TEST; i++) {
 		strong_bigrand(&Rng, P, k);
@@ -50,8 +50,8 @@ void Test(csprng &Rng, big X, big P, Result &res)
 		res.c[1] += !compare(Z2, Z);
 
 		//duration2(X, k, P, Z1, powmod2_JSF, res.t[2]);
-		duration1(X, k, P, Z3, powmod_ShrJSF, res.t[2]);
-		//durationJSF(X, k, P, Z3, res.t[2]);
+		//duration1(X, k, P, Z3, powmod_ShrJSF, res.t[2]);
+		durationJSF(X, k, P, Z3, res.t[2]);
 		res.c[2] += !compare(Z3, Z);
 	}
 	res.t[0] /= TEST;
@@ -60,13 +60,8 @@ void Test(csprng &Rng, big X, big P, Result &res)
 		res.t[i] /= TEST;
 		res.p[i] = (res.t[i] / res.t[0]) * 100;
 	}
-	//res.t[2] /= TEST;
-	//res.t[0] /= TEST;
-	//res.t[1] /= TEST;
-	//res.p[0] = 100;
-	//res.p[1] = (res.t[1] / res.t[0]) * 100;
-	//res.p[2] = (res.t[2] / res.t[0]) * 100;
 	mirkill(Z); mirkill(Z1);
+	mirkill(Z2); mirkill(Z3);
 	mirkill(k); mirkill(Y);
 	mirkill(a); mirkill(b);
 }
@@ -105,7 +100,7 @@ int main()
 {
 	srand(time(NULL));
 	miracl *M = mirsys(100, 0);
-	M->IOBASE = 10;
+	M->IOBASE = 16;
 	csprng Rng; 
 	InitStrongRNG(&Rng);
 	CONSTANTS_F2m f2m[5] = { { 163, 7, 6, 3 }, { 233, 74, 0, 0 },
@@ -115,8 +110,8 @@ int main()
 	for (int i = 0; i < 5; i++) {
 		getGF(P, f2m[i]);
 		cout << "P: "; cotnum(P, stdout);
-		cout << "prime: " << nxprime(P, P) << endl;
-		cout << "P: "; cotnum(P, stdout);
+		//cout << "prime: " << nxprime(P, P) << endl;
+		//cout << "P: "; cotnum(P, stdout);
 		strong_bigrand(&Rng, P, X);
 		//testMulBin(P, Rng);
 		//testMul2Bin(P, Rng);

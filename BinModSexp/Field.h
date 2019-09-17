@@ -16,7 +16,7 @@ using namespace std;
 
 struct CONSTANTS_F2m {
 	DWORD m, k3, k2, k1;
-} ;
+};
 
 void InitStrongRNG(csprng *Rng);
 
