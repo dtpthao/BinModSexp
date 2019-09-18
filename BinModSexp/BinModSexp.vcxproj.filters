@@ -36,6 +36,9 @@
     <ClCompile Include="mrpower.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="old_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="ms32.lib">
@@ -59,6 +62,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JSF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="old_tests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

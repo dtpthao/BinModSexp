@@ -121,6 +121,7 @@
     <ClCompile Include="JSF.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mrpower.c" />
+    <ClCompile Include="old_tests.cpp" />
     <ClCompile Include="ShamirMul.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +133,7 @@
     <ClInclude Include="Field.h" />
     <ClInclude Include="JSF.h" />
     <ClInclude Include="miracl.h" />
+    <ClInclude Include="old_tests.h" />
     <ClInclude Include="ShamirMul.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
