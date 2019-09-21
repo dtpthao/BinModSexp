@@ -96,7 +96,6 @@ void durationJSF(big X, big k, big P, big &Z, double &t)
 }
 
 /*
- * Counting execution time of single scalar multiplication via Shamir method
  * R = kP = aP + bQ
  */
 void duration2(big X, big k, big P, big &Z,
@@ -142,3 +141,7 @@ void duration2(big X, big k, big P, big &Z,
 	mirkill(a); mirkill(b); mirkill(Y);
 }
 
+void duration3(big g, big k, big P, big &R)
+{
+
+}
