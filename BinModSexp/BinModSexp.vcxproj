@@ -115,13 +115,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Bin.cpp" />
+    <ClCompile Include="powbin.cpp" />
     <ClCompile Include="Duration.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="JSF.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mrpower.c" />
     <ClCompile Include="old_tests.cpp" />
+    <ClCompile Include="pow2bin.cpp" />
+    <ClCompile Include="pow3bin.cpp" />
     <ClCompile Include="ShamirMul.cpp" />
   </ItemGroup>
   <ItemGroup>

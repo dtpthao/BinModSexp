@@ -25,7 +25,7 @@ int main()
 	for (int i = 0; i < 5; i++) {
 		getGF(P, f2m[i]);
 		//testMul3Bin(P, Rng);
-		testMul3Bin_2(P, Rng);
+		test3Bin_2(P, Rng);
 	}
 
 	mirkill(P);
@@ -53,7 +53,7 @@ int old_main()
 		//strong_bigrand(&Rng, P, X);
 		//testMulBin(P, Rng);
 		//testMul2Bin(P, Rng);
-		testMul3Bin(P, Rng);
+		test3Bin(P, Rng);
 		//Test(Rng, X, P, res[i]);
 		//testJSF(P, Rng);
 	}

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\bin">
+      <UniqueIdentifier>{6fd2edcb-836b-41e7-9da5-18754868c3c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,9 +30,6 @@
     <ClCompile Include="Field.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="JSF.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -38,6 +38,15 @@
     </ClCompile>
     <ClCompile Include="old_tests.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pow3bin.cpp">
+      <Filter>Source Files\bin</Filter>
+    </ClCompile>
+    <ClCompile Include="pow2bin.cpp">
+      <Filter>Source Files\bin</Filter>
+    </ClCompile>
+    <ClCompile Include="powbin.cpp">
+      <Filter>Source Files\bin</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
