@@ -213,8 +213,8 @@ void powmod3_ShrBin(big X, big k, big P, big &Z)
 	mirkill(y1); mirkill(y2); mirkill(y3);
 }
 
-#define MUL1 100
-void testMulBin(big P, csprng &Rng)
+#define TEST1 100
+void testBin(big P, csprng &Rng)
 {
 	big k = mirvar(0), X = mirvar(0),
 		Z = mirvar(0), Z1 = mirvar(0);
@@ -252,16 +252,16 @@ void testMulBin(big P, csprng &Rng)
 	mirkill(k); mirkill(Z); mirkill(Z1);
 }
 
-#define MUL2 1000
-void testMul2Bin(big P, csprng &Rng)
+#define TEST2 1000
+void test2Bin(big P, csprng &Rng)
 {
 	big X = mirvar(0), Y = mirvar(0), k = mirvar(0);
 	big a = mirvar(0), b = mirvar(0),
 		Z = mirvar(0), Z1 = mirvar(0);
 	strong_bigrand(&Rng, P, X);
 
-	int count = MUL2;
-	for (int i = 0; i < MUL2; i++) {
+	int count = TEST2;
+	for (int i = 0; i < TEST2; i++) {
 		strong_bigrand(&Rng, P, k);
 		ShamirDecomposit(k, a, b, X, Y, P);
 		/*cout << "k: "; cotnum(k, stdout);
@@ -279,8 +279,8 @@ void testMul2Bin(big P, csprng &Rng)
 	mirkill(Z); mirkill(Z1);
 }
 
-#define MUL3 1000
-void testMul3Bin(big P, csprng &Rng)
+#define TEST3 1000
+void test3Bin(big P, csprng &Rng)
 {
 	big k = mirvar(0);
 	big r1 = mirvar(0), r2 = mirvar(0), r3 = mirvar(0),
@@ -292,8 +292,8 @@ void testMul3Bin(big P, csprng &Rng)
 	strong_bigrand(&Rng, P, y1);
 	cout << "P: "; cotnum(P, stdout);
 
-	int count = MUL3;
-	for (int i = 0; i < MUL3; i++) {
+	int count = TEST3;
+	for (int i = 0; i < TEST3; i++) {
 		//strong_bigrand(&Rng, P, k);
 		ShamirDecomposit3(k, r1, r2, r3, y1, y2, y3, P);
 		cout << "k: "; cotnum(k, stdout);
@@ -316,7 +316,7 @@ void testMul3Bin(big P, csprng &Rng)
 	mirkill(R); mirkill(R1); mirkill(k);
 }
 
-void testMul3Bin_2(big P, csprng &Rng)
+void test3Bin_2(big P, csprng &Rng)
 {
 	big k = mirvar(0);
 	big	R = mirvar(0), R1 = mirvar(0);
@@ -326,8 +326,8 @@ void testMul3Bin_2(big P, csprng &Rng)
 	strong_bigrand(&Rng, P, y[1]);
 	cout << "P: "; cotnum(P, stdout);
 
-	int count = MUL3;
-	for (int i = 0; i < MUL3; i++) {
+	int count = TEST3;
+	for (int i = 0; i < TEST3; i++) {
 		strong_bigrand(&Rng, P, k);
 		ShamirDecomposit3_2(k, y[1], r, y, P);
 		//cout << "k: "; cotnum(k, stdout);

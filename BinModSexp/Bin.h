@@ -14,11 +14,11 @@ void powmod_ShrBin(big X, big k, big P, big &Z);
 void powmod3_Bin(big r1, big r2, big r3, big y1, big y2, big y3, big P, big &R);
 void powmod3_ShrBin(big X, big k, big P, big &Z);
 
-void testMulBin(big P, csprng &Rng);
-void testMul2Bin(big P, csprng &Rng);
+void testBin(big P, csprng &Rng);
+void test2Bin(big P, csprng &Rng);
 
-void testMul3Bin(big P, csprng &Rng);
-void testMul3Bin_2(big P, csprng &Rng);
+void test3Bin(big P, csprng &Rng);
+void test3Bin_2(big P, csprng &Rng);
 
 #endif // !_BIN_H
 
