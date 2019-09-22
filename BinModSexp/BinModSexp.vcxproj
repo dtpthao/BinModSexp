@@ -124,6 +124,7 @@
     <ClCompile Include="old_tests.cpp" />
     <ClCompile Include="pow2bin.cpp" />
     <ClCompile Include="pow3bin.cpp" />
+    <ClCompile Include="pownbin.cpp" />
     <ClCompile Include="ShamirMul.cpp" />
   </ItemGroup>
   <ItemGroup>

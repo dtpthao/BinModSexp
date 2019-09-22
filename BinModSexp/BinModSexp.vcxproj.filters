@@ -48,6 +48,9 @@
     <ClCompile Include="powbin.cpp">
       <Filter>Source Files\bin</Filter>
     </ClCompile>
+    <ClCompile Include="pownbin.cpp">
+      <Filter>Source Files\bin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="ms32.lib">

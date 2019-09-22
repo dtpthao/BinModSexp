@@ -62,17 +62,17 @@ void powmod3_Bin2(big *r, big *y, big P, big &R)
 	int bit1, bit2, bit3, i, j = 0, index;
 	DWORD last32, w1, w2, w3;
 	big pre_lst[8];
-	prepowmod3_Bin(y[1], y[2], y[3], pre_lst, P);
+	prepowmod3_Bin(y[0], y[1], y[2], pre_lst, P);
 
-	i = r[3]->len - 1;
-	last32 = r[3]->w[i];
+	i = r[2]->len - 1;
+	last32 = r[2]->w[i];
 	while (last32 >> j && j != 32) j++;
 
 	R = mirvar(1);
 	for (--j; i >= 0; i--, j = 31) {
-		w1 = r[1]->w[i];
-		w2 = r[2]->w[i];
-		w3 = r[3]->w[i];
+		w1 = r[0]->w[i];
+		w2 = r[1]->w[i];
+		w3 = r[2]->w[i];
 		while (j) {
 			bit1 = (w1 >> j) & 1;
 			bit2 = ((w2 >> j) & 1) << 1;
@@ -151,15 +151,15 @@ void test3Bin_2(big P, csprng &Rng)
 	big k = mirvar(0);
 	big	R = mirvar(0), R1 = mirvar(0);
 	big r[3], y[3];
-	r[1] = mirvar(0); r[2] = mirvar(0); r[3] = mirvar(0);
-	y[1] = mirvar(0); y[2] = mirvar(0); y[3] = mirvar(0);
-	strong_bigrand(&Rng, P, y[1]);
+	r[0] = mirvar(0); r[1] = mirvar(0); r[2] = mirvar(0);
+	y[0] = mirvar(0); y[1] = mirvar(0); y[2] = mirvar(0);
+	strong_bigrand(&Rng, P, y[0]);
 	cout << "P: "; cotnum(P, stdout);
 
 	int count = TEST3;
 	for (int i = 0; i < TEST3; i++) {
 		strong_bigrand(&Rng, P, k);
-		ShamirDecomposit3_2(k, y[1], r, y, P);
+		ShamirDecomposit3_2(k, y[0], r, y, P);
 		//cout << "k: "; cotnum(k, stdout);
 		//cout << "r1: "; cotnum(r[1], stdout);
 		//cout << "r2: "; cotnum(r[2], stdout);
@@ -170,12 +170,12 @@ void test3Bin_2(big P, csprng &Rng)
 
 		powmod3_Bin2(r, y, P, R1);
 		//cout << "R1: "; cotnum(R1, stdout);
-		powmod(y[1], k, P, R);
+		powmod(y[0], k, P, R);
 		//cout << "R : "; cotnum(R, stdout);
 		count -= compare(R, R1);
 	}
 	printf("correct: %d\n\n", count);
-	mirkill(r[1]); mirkill(r[2]); mirkill(r[3]);
-	mirkill(y[1]); mirkill(y[2]); mirkill(y[3]);
+	mirkill(r[0]); mirkill(r[1]); mirkill(r[2]);
+	mirkill(y[0]); mirkill(y[1]); mirkill(y[2]);
 	mirkill(R); mirkill(R1); mirkill(k);
 }

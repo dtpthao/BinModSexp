@@ -30,7 +30,6 @@ inline LONGLONG getTickCount(stopWatch *timer) {
 
 #define REPEAT 10
 /*
- * Counting execution time of simple scalar multiplication
  * R = kP
  */
 void duration1(big X, big k, big P, big &Z, 

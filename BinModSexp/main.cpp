@@ -26,6 +26,7 @@ int main()
 		getGF(P, f2m[i]);
 		//testMul3Bin(P, Rng);
 		test3Bin_2(P, Rng);
+		//testnBin(P, Rng);
 	}
 
 	mirkill(P);
