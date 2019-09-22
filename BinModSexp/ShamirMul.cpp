@@ -96,7 +96,7 @@ void ShamirDecomposit3_2(big k, big g, big *r, big *y, big P)
 void ShamirDecomposit_n(int n, big k, big g, big *r, big *y, big P)
 {
 	if (k->len == 0) return;
-	DWORD l, i = 31, l1, l2, l3;
+	DWORD l, i = 31;
 	big sft = mirvar(1);
 	for (int ii = 0; ii < n; ii++) {
 		r[i] = mirvar(1);
@@ -104,28 +104,18 @@ void ShamirDecomposit_n(int n, big k, big g, big *r, big *y, big P)
 	}
 
 	while (!(k->w[k->len - 1] & (1 << i))) i--;
-	l = (k->len << 5) - (31 - i);  //lenght of "k"
-	l1 = l2 = l3 = l / 3;
-	l3 += l % 3;
+	l = ((k->len << 5) - (31 - i))/n;  //bit lenght of "k"/n
 
-	sftbit(sft, l1, sft);
+	sftbit(sft, l, sft);
 	copy(k, r[0]);
-	divide(r[0], sft, r[1]);
-	divide(r[1], sft, r[2]);
-
 	copy(g, y[0]);
-	copy(y[0], y[1]);
-	for (i = 0; i < l1; i++) {
-		multiply(y[1], y[1], y[1]);
-		//cout << "y1: "; cotnum(y1, stdout);
-		divide(y[1], P, P);
-		//cout << "y1: "; cotnum(y1, stdout);
-	}
-	copy(y[1], y[2]);
-	for (i = 0; i < l2; i++) {
-		multiply(y[2], y[2], y[2]);
-		divide(y[2], P, P);
+	for (int i = 1; i < n; i++) {
+		divide(r[i - 1], sft, r[i]);
+		copy(y[i - 1], y[i]);
+		for (int j = 0; j < l; j++) {
+			multiply(y[i], y[i], y[i]);
+			divide(y[i], P, P);
+		}
 	}
 	mirkill(sft);
 }
-

@@ -21,12 +21,14 @@ int main()
 	InitStrongRNG(&Rng);
 	CONSTANTS_F2m f2m[5] = { { 163, 7, 6, 3 }, { 233, 74, 0, 0 },
 						{ 283, 12, 7, 5 }, { 409, 87, 0, 0 }, { 571, 10, 5, 2 } };
-	big P, X;
+	big P = mirvar(1);
+	//char sP[51] = "11692013098647223345629478661730264157247460344008";
+	//cinstr(P, sP);
 	for (int i = 0; i < 5; i++) {
 		getGF(P, f2m[i]);
 		//testMul3Bin(P, Rng);
-		test3Bin_2(P, Rng);
-		//testnBin(P, Rng);
+		//test3Bin_2(P, Rng);
+		testnBin(P, Rng);
 	}
 
 	mirkill(P);

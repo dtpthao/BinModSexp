@@ -78,19 +78,20 @@ void powmod3_Bin2(big *r, big *y, big P, big &R)
 			bit2 = ((w2 >> j) & 1) << 1;
 			bit3 = ((w3 >> j) & 1) << 2;
 			index = bit1 + bit2 + bit3;
-			//printf("index: %d\n", index);
+			printf("index: %d\n", index);
 			mulmod(R, R, P, R);
-			//cout << "R^2: "; cotnum(R, stdout);
+			cout << "R^2: "; cotnum(R, stdout);
 			if (index) mulmod(R, pre_lst[index], P, R);
-			//cout << "R: "; cotnum(R, stdout);
+			cout << "R: "; cotnum(R, stdout);
 			j--;
 		}
 		index = (w1 & 1) + ((w2 & 1) << 1) + ((w3 & 1) << 2);
-		//printf("index: %d\n", index);
+		printf("index: %d\n", index);
 		mulmod(R, R, P, R);
-		//cout << "R^2: "; cotnum(R, stdout);
+		cout << "R^2: "; cotnum(R, stdout);
 		if (index) mulmod(R, pre_lst[index], P, R);
-		//cout << "R: "; cotnum(R, stdout);
+		cout << "R: "; cotnum(R, stdout);
+		cout << endl;
 	}
 	for (i = 0; i < 8; i++) mirkill(pre_lst[i]);
 }
@@ -109,7 +110,7 @@ void powmod3_ShrBin(big X, big k, big P, big &Z)
 	mirkill(y1); mirkill(y2); mirkill(y3);
 }
 
-#define TEST3 1000
+#define TEST3 1
 void test3Bin(big P, csprng &Rng)
 {
 	big k = mirvar(0);
@@ -155,23 +156,27 @@ void test3Bin_2(big P, csprng &Rng)
 	y[0] = mirvar(0); y[1] = mirvar(0); y[2] = mirvar(0);
 	strong_bigrand(&Rng, P, y[0]);
 	cout << "P: "; cotnum(P, stdout);
+	//char sk[51] = "7214642831191146504103114534140063683838032640121";
+	//cinstr(k, sk);
+	//char g[51] = "2843960000033430704672362122080271010298877412814";
+	//cinstr(y[0], g);
 
 	int count = TEST3;
 	for (int i = 0; i < TEST3; i++) {
 		strong_bigrand(&Rng, P, k);
 		ShamirDecomposit3_2(k, y[0], r, y, P);
-		//cout << "k: "; cotnum(k, stdout);
-		//cout << "r1: "; cotnum(r[1], stdout);
-		//cout << "r2: "; cotnum(r[2], stdout);
-		//cout << "r3: "; cotnum(r[3], stdout);
-		//cout << "y1: "; cotnum(y[1], stdout);
-		//cout << "y2: "; cotnum(y[2], stdout);
-		//cout << "y3: "; cotnum(y[3], stdout);
+		cout << "k: "; cotnum(k, stdout);
+		cout << "r0: "; cotnum(r[0], stdout);
+		cout << "r1: "; cotnum(r[1], stdout);
+		cout << "r2: "; cotnum(r[2], stdout);
+		cout << "y0: "; cotnum(y[0], stdout);
+		cout << "y1: "; cotnum(y[1], stdout);
+		cout << "y2: "; cotnum(y[2], stdout);
 
 		powmod3_Bin2(r, y, P, R1);
-		//cout << "R1: "; cotnum(R1, stdout);
+		cout << "R1: "; cotnum(R1, stdout);
 		powmod(y[0], k, P, R);
-		//cout << "R : "; cotnum(R, stdout);
+		cout << "R : "; cotnum(R, stdout);
 		count -= compare(R, R1);
 	}
 	printf("correct: %d\n\n", count);

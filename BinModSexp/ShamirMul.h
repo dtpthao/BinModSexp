@@ -10,7 +10,7 @@ void ShamirDecomposit(big k, big a, big b, big X, big Y, big P);
 void ShamirDecomposit3(big k, big r1, big r2, big r3, big y1, big y2, big y3, big P);
 void ShamirDecomposit3_2(big k, big g, big *r, big *y, big P);
 
-void ShamirDecompositn(int n, big k, big g, big *r, big *y, big P);
+void ShamirDecomposit_n(int n, big k, big g, big *r, big *y, big P);
 
 #endif
 

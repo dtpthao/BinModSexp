@@ -9,10 +9,10 @@ void prepowmodn_Bin(int n, big *y, big *pre_list, big P)
 	for (int i = 0; i < n; i++) {
 		idx = 1 << i;
 		copy(y[i], pre_list[idx]);
-		printf("pre_list[%d]: ", idx); cotnum(pre_list[idx], stdout);
+		//printf("pre_list[%d]: ", idx); cotnum(pre_list[idx], stdout);
 		for (int j = 1; j < idx; j++) {
 			mulmod(pre_list[j], pre_list[idx], P, pre_list[idx + j]);
-			printf("pre_list[%d]: ", idx + j); cotnum(pre_list[idx + j], stdout);
+			//printf("pre_list[%d]: ", idx + j); cotnum(pre_list[idx + j], stdout);
 		}
 	}
 }
@@ -32,12 +32,13 @@ void powmodn_Bin(int n, big *r, big *y, big P, big &R)
 
 	R = mirvar(1);
 	for (--j; i >= 0; i--, j = 31) {
-		for (int ii = 0; ii < n; ii++) w[ii] = r[ii]->w[ii];
+		tmp = 0;
+		for (int ii = 0; ii < n; ii++) w[ii] = r[ii]->w[i];
 		while (j) {
 			for (int ii = 0; ii < n; ii++) {
 				tmp += ((w[ii] >> j) & 1) << ii;
 			}
-			//printf("index: %d\n", index);
+			//printf("index: %d\n", tmp);
 			mulmod(R, R, P, R);
 			//cout << "R^2: "; cotnum(R, stdout);
 			if (tmp) mulmod(R, pre_lst[tmp], P, R);
@@ -48,32 +49,19 @@ void powmodn_Bin(int n, big *r, big *y, big P, big &R)
 		for (int ii = 0; ii < n; ii++) {
 			tmp += (w[ii] & 1) << ii;
 		}
-		//printf("index: %d\n", index);
+		//printf("tmp: %d\n", tmp);
 		mulmod(R, R, P, R);
 		//cout << "R^2: "; cotnum(R, stdout);
 		if (tmp) mulmod(R, pre_lst[tmp], P, R);
 		//cout << "R: "; cotnum(R, stdout);
+		//cout << endl;
 	}
 	tmp = 1 << n;
 	for (i = 0; i < tmp; i++) mirkill(pre_lst[i]);
 }
 
-//void powmodn_ShrBin(big X, big k, big P, big &Z)
-//{
-//	big r1 = mirvar(1),
-//		r2 = mirvar(1),
-//		r3 = mirvar(1),
-//		y1 = mirvar(1),
-//		y2 = mirvar(1),
-//		y3 = mirvar(1);
-//	ShamirDecomposit3(k, r1, r2, r3, y1, y2, y3, P);
-//	powmod3_Bin(r1, r2, r3, y1, y2, y3, P, Z);
-//	mirkill(r1); mirkill(r2); mirkill(r3);
-//	mirkill(y1); mirkill(y2); mirkill(y3);
-//}
-
-#define TESTn 1
-#define N 3
+#define TESTn 10000
+#define N 4
 void testnBin(big P, csprng &Rng)
 {
 	big k = mirvar(0);
@@ -83,22 +71,26 @@ void testnBin(big P, csprng &Rng)
 		r[i] = mirvar(1);
 		y[i] = mirvar(1);
 	}
-	//strong_bigrand(&Rng, P, y[0]);
-	k = mirvar(0x69D); y[1] = mirvar(3);
-	nxprime(k, P);
+	strong_bigrand(&Rng, P, y[0]);
 	cout << "P: "; cotnum(P, stdout);
+	//k = mirvar(0x69D); y[0] = mirvar(3);
+	//nxprime(k, P);
+	//char sk[51] = "7214642831191146504103114534140063683838032640121";
+	//cinstr(k, sk);
+	//char g[51] = "2843960000033430704672362122080271010298877412814";
+	//cinstr(y[0], g);
 
 	int count = TESTn;
 	for (int i = 0; i < TESTn; i++) {
-		//strong_bigrand(&Rng, P, k);
-		ShamirDecomposit3_2(k, y[0], r, y, P);
-		cout << "k: "; cotnum(k, stdout);
-		cout << "r0: "; cotnum(r[0], stdout);
-		cout << "r1: "; cotnum(r[1], stdout);
-		cout << "r2: "; cotnum(r[2], stdout);
-		cout << "y0: "; cotnum(y[0], stdout);
-		cout << "y1: "; cotnum(y[1], stdout);
-		cout << "y2: "; cotnum(y[2], stdout);
+		strong_bigrand(&Rng, P, k);		
+		ShamirDecomposit_n(N, k, y[0], r, y, P);
+		//cout << "k: "; cotnum(k, stdout);
+		//cout << "r0: "; cotnum(r[0], stdout);
+		//cout << "r1: "; cotnum(r[1], stdout);
+		//cout << "r2: "; cotnum(r[2], stdout);
+		//cout << "y0: "; cotnum(y[0], stdout);
+		//cout << "y1: "; cotnum(y[1], stdout);
+		//cout << "y2: "; cotnum(y[2], stdout);
 
 		powmodn_Bin(N, r, y, P, R1);
 		//cout << "R1: "; cotnum(R1, stdout);
