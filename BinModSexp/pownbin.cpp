@@ -1,5 +1,7 @@
 #include "Bin.h"
 
+// This is complicated to explain in condensed words
+// for example with n = 3:
 //  0   1   2    3     4    5      6        7
 // [1, y1, y2, y1*y2, y3, y1*y3, y2*y3, y1*y2*y3]
 void prepowmodn_Bin(int n, big *y, big *pre_list, big P)
@@ -17,7 +19,7 @@ void prepowmodn_Bin(int n, big *y, big *pre_list, big P)
 	}
 }
 
-// R = y1^r1 + y2^r2 + y3^r3;   |r1| = |r2| <= |r3|; || - bit len
+// R = y1^r1 * y2^r2 * ... * yn^rn;
 void powmodn_Bin(int n, big *r, big *y, big P, big &R)
 {
 	int i, j = 0, tmp;
@@ -82,7 +84,7 @@ void testnBin(big P, csprng &Rng)
 
 	int count = TESTn;
 	for (int i = 0; i < TESTn; i++) {
-		strong_bigrand(&Rng, P, k);		
+		strong_bigrand(&Rng, P, k);
 		ShamirDecomposit_n(N, k, y[0], r, y, P);
 		//cout << "k: "; cotnum(k, stdout);
 		//cout << "r0: "; cotnum(r[0], stdout);

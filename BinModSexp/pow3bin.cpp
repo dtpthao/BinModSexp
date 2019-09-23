@@ -17,7 +17,9 @@ void prepowmod3_Bin(big y1, big y2, big y3, big *y, big P)
 	//}
 }
 
-// R = y1^r1 + y2^r2 + y3^r3;   |r1| >= |r2| >= |r3|; || - bit len
+// R = g^k = y0^r0 * y1^r1 * y2^r2
+// Bit length of r[i] (i = [0, 1]) is greater than bit length of r2 by 1 
+// ==> seems a stupid idea
 void powmod3_Bin(big r1, big r2, big r3, big y1, big y2, big y3, big P, big &R)
 {
 	int bit1, bit2, bit3, i, j = 0, index;
@@ -56,7 +58,8 @@ void powmod3_Bin(big r1, big r2, big r3, big y1, big y2, big y3, big P, big &R)
 	for (i = 0; i < 8; i++) mirkill(y[i]);
 }
 
-// R = y1^r1 + y2^r2 + y3^r3;   |r1| = |r2| <= |r3|; || - bit len
+// R = g^k = y0^r0 * y1^r1 * y2^r2
+// Bit length of r2 is greater than bit length of r0, r1 by bitlen of k mod 3
 void powmod3_Bin2(big *r, big *y, big P, big &R)
 {
 	int bit1, bit2, bit3, i, j = 0, index;
@@ -117,7 +120,7 @@ void test3Bin(big P, csprng &Rng)
 	big r1 = mirvar(0), r2 = mirvar(0), r3 = mirvar(0),
 		y1 = mirvar(0), y2 = mirvar(0), y3 = mirvar(0);
 	big	R = mirvar(0), R1 = mirvar(0);
-	//r1 = r2 = r3 = y1 = y2 = y3 = R = R1 = mirvar(0); -> we can't use this
+	//r1 = r2 = r3 = y1 = y2 = y3 = R = R1 = mirvar(0); ==> just to remember that this is unusable
 	//k = mirvar(0x69D); y[1] = mirvar(3);
 	//nxprime(k, P);
 	strong_bigrand(&Rng, P, y1);

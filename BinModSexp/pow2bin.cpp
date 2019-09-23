@@ -79,3 +79,43 @@ void test2Bin(big P, csprng &Rng)
 	mirkill(k); mirkill(a); mirkill(b);
 	mirkill(Z); mirkill(Z1);
 }
+
+#define REPEAT2 10
+void compare_2_n(int len, big P, csprng &Rng)
+{
+	LONGLONG dur1, min1 = LONG_MAX,
+			 dur2, min2 = LONG_MAX;
+	big a = mirvar(1), b = mirvar(1),
+		g = mirvar(1), k = mirvar(1), 
+		R = mirvar(1), R1 = mirvar(1);
+	big y[2];
+	stopWatch timer1, timer2;
+
+	strong_bigrand(&Rng, P, g);
+	ShamirDecomposit_ng(len, 2, g, y, P);
+
+	int count = TEST2;
+	for (int i = 0; i < TEST2; i++) {
+		strong_bigrand(&Rng, P, k);
+		ShamirDecomposit(k, a, b, X, Y, P);
+
+		//powmod2_Bin(X, a, Y, b, P, Z);
+		for (int i = 0; i < REPEAT2; i++) {
+			startTimer(&timer1);
+			powmod2_Bin(g, a, y, b, P, R);
+			stopTimer(&timer1);
+
+			dur1 = getTickCount(&timer1);
+			min1 = (min1 < dur1) ? min1 : dur1;
+
+		}
+				
+		powmod2(X, a, Y, b, P, R1);
+		count += (compare(R, R1) == 0);
+	}
+	printf("%d\n", count);
+
+
+	t += min;
+
+}

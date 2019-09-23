@@ -3,6 +3,7 @@
 
 #include "Field.h"
 #include "ShamirMul.h"
+#include "Duration.h"
 
 // powbin.cpp
 void powmod_Bin(big X, big k, big P, big &Z);
