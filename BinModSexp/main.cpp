@@ -9,8 +9,7 @@ extern "C" {
 }
 using namespace std;
 
-#include "old_tests.h"
-
+#include "new_tests.h"
 
 int main()
 {
@@ -19,17 +18,24 @@ int main()
 	M->IOBASE = 10;
 	csprng Rng;
 	InitStrongRNG(&Rng);
-	CONSTANTS_F2m f2m[5] = { { 163, 7, 6, 3 }, { 233, 74, 0, 0 },
-						{ 283, 12, 7, 5 }, { 409, 87, 0, 0 }, { 571, 10, 5, 2 } };
+	int m[5] = { 192, 256, 384, 512, 1024 };
 	big P = mirvar(1);
 	//char sP[51] = "11692013098647223345629478661730264157247460344008";
 	//cinstr(P, sP);
+
+	Result res[6];
+
 	for (int i = 0; i < 5; i++) {
-		getGF(P, f2m[i]);
+		//getGF(P, f2m[i]);
+		bigdig(m[i], 2, P);
+		nxprime(P, P);
 		//testMul3Bin(P, Rng);
 		//test3Bin_2(P, Rng);
-		testnBin(P, Rng);
+		//testnBin(P, Rng);
+		compares(m[i], P, Rng, res[i]);
 	}
+
+	printcompares_bin(res, m);
 
 	mirkill(P);
 	mirexit();

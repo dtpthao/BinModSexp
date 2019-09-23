@@ -8,6 +8,12 @@
 
 typedef epoint* pepoint;
 
+struct Result {
+	double t[5] = { 0 };
+	double p[5] = { 0 };
+	unsigned int c[5] = { 0 };
+};
+
 typedef struct {
 	LARGE_INTEGER start;
 	LARGE_INTEGER stop;

@@ -115,6 +115,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="new_tests.cpp" />
     <ClCompile Include="powbin.cpp" />
     <ClCompile Include="Duration.cpp" />
     <ClCompile Include="Field.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="Field.h" />
     <ClInclude Include="JSF.h" />
     <ClInclude Include="miracl.h" />
+    <ClInclude Include="new_tests.h" />
     <ClInclude Include="old_tests.h" />
     <ClInclude Include="ShamirMul.h" />
   </ItemGroup>

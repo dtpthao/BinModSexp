@@ -51,6 +51,9 @@
     <ClCompile Include="pownbin.cpp">
       <Filter>Source Files\bin</Filter>
     </ClCompile>
+    <ClCompile Include="new_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="ms32.lib">
@@ -77,6 +80,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="old_tests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="new_tests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

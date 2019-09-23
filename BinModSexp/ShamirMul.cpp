@@ -20,7 +20,7 @@ void ShamirDecomposit(big k, big a, big b, big X, big Y, big P)
 
 // R = g^k = y0^r0 * y1^r1 * y2^r2
 // Bit length of r[i] (i = [0, 1]) is greater than bit length of r2 by 1 
-// ==> seems a stupid idea
+// ==> seems a stupid idea. I keep it here to remind me not do it again.
 void ShamirDecomposit3(big k, big r1, big r2, big r3, big y1, big y2, big y3, big P)
 {
 	if (k->len == 0) return;
@@ -58,7 +58,8 @@ void ShamirDecomposit3(big k, big r1, big r2, big r3, big y1, big y2, big y3, bi
 
 // R = g^k = y0^r0 * y1^r1 * y2^r2
 // Bit length of r2 is greater than bit length of r0, r1 by bitlen of k mod 3
-void ShamirDecomposit3_2(big k, big g, big *r, big *y, big P)
+// This is currently effective.
+void ShamirDecomposit3(big k, big g, big *r, big *y, big P)
 {
 	if (k->len == 0) return;
 	DWORD l, i = 31, l1, l2, l3;

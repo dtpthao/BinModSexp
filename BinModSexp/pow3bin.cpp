@@ -60,7 +60,8 @@ void powmod3_Bin(big r1, big r2, big r3, big y1, big y2, big y3, big P, big &R)
 
 // R = g^k = y0^r0 * y1^r1 * y2^r2
 // Bit length of r2 is greater than bit length of r0, r1 by bitlen of k mod 3
-void powmod3_Bin2(big *r, big *y, big P, big &R)
+// This is currently effective.
+void powmod3_Bin(big *r, big *y, big P, big &R)
 {
 	int bit1, bit2, bit3, i, j = 0, index;
 	DWORD last32, w1, w2, w3;
@@ -81,20 +82,20 @@ void powmod3_Bin2(big *r, big *y, big P, big &R)
 			bit2 = ((w2 >> j) & 1) << 1;
 			bit3 = ((w3 >> j) & 1) << 2;
 			index = bit1 + bit2 + bit3;
-			printf("index: %d\n", index);
+			//printf("index: %d\n", index);
 			mulmod(R, R, P, R);
-			cout << "R^2: "; cotnum(R, stdout);
+			//cout << "R^2: "; cotnum(R, stdout);
 			if (index) mulmod(R, pre_lst[index], P, R);
-			cout << "R: "; cotnum(R, stdout);
+			//cout << "R: "; cotnum(R, stdout);
 			j--;
 		}
 		index = (w1 & 1) + ((w2 & 1) << 1) + ((w3 & 1) << 2);
-		printf("index: %d\n", index);
+		//printf("index: %d\n", index);
 		mulmod(R, R, P, R);
-		cout << "R^2: "; cotnum(R, stdout);
+		//cout << "R^2: "; cotnum(R, stdout);
 		if (index) mulmod(R, pre_lst[index], P, R);
-		cout << "R: "; cotnum(R, stdout);
-		cout << endl;
+		//cout << "R: "; cotnum(R, stdout);
+		//cout << endl;
 	}
 	for (i = 0; i < 8; i++) mirkill(pre_lst[i]);
 }
@@ -113,7 +114,7 @@ void powmod3_ShrBin(big X, big k, big P, big &Z)
 	mirkill(y1); mirkill(y2); mirkill(y3);
 }
 
-#define TEST3 1
+#define TEST3 1000
 void test3Bin(big P, csprng &Rng)
 {
 	big k = mirvar(0);
@@ -167,7 +168,7 @@ void test3Bin_2(big P, csprng &Rng)
 	int count = TEST3;
 	for (int i = 0; i < TEST3; i++) {
 		strong_bigrand(&Rng, P, k);
-		ShamirDecomposit3_2(k, y[0], r, y, P);
+		ShamirDecomposit3(k, y[0], r, y, P);
 		cout << "k: "; cotnum(k, stdout);
 		cout << "r0: "; cotnum(r[0], stdout);
 		cout << "r1: "; cotnum(r[1], stdout);
@@ -176,7 +177,7 @@ void test3Bin_2(big P, csprng &Rng)
 		cout << "y1: "; cotnum(y[1], stdout);
 		cout << "y2: "; cotnum(y[2], stdout);
 
-		powmod3_Bin2(r, y, P, R1);
+		powmod3_Bin(r, y, P, R1);
 		cout << "R1: "; cotnum(R1, stdout);
 		powmod(y[0], k, P, R);
 		cout << "R : "; cotnum(R, stdout);
@@ -187,3 +188,4 @@ void test3Bin_2(big P, csprng &Rng)
 	mirkill(y[0]); mirkill(y[1]); mirkill(y[2]);
 	mirkill(R); mirkill(R1); mirkill(k);
 }
+
