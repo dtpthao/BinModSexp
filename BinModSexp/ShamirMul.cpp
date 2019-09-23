@@ -138,20 +138,20 @@ void ShamirDecomposit_ng(int len, int n, big g, big *y, big P)
 void ShamirDecomposit_n(int n, big k, big g, big *r, big *y, big P)
 {
 	if (k->len == 0) return;
-	DWORD l, i = 31;
+	DWORD l, i;
 	big sft = mirvar(1);
-	for (int ii = 0; ii < n; ii++) {
+	for (i = 0; i < n; i++) {
 		r[i] = mirvar(1);
 		y[i] = mirvar(1);
 	}
-
+	i = 31;
 	while (!(k->w[k->len - 1] & (1 << i))) i--;
 	l = ((k->len << 5) - (31 - i))/n;  //bit lenght of "k" / n
 
 	sftbit(sft, l, sft);
 	copy(k, r[0]);
 	copy(g, y[0]);
-	for (int i = 1; i < n; i++) {
+	for (i = 1; i < n; i++) {
 		divide(r[i - 1], sft, r[i]);
 		copy(y[i - 1], y[i]);
 		for (int j = 0; j < l; j++) {
