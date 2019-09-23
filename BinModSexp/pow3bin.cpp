@@ -165,7 +165,7 @@ void test3Bin_2(big P, csprng &Rng)
 	//char g[51] = "2843960000033430704672362122080271010298877412814";
 	//cinstr(y[0], g);
 
-	int count = TEST3;
+	int count = 0;
 	for (int i = 0; i < TEST3; i++) {
 		strong_bigrand(&Rng, P, k);
 		ShamirDecomposit3(k, y[0], r, y, P);
@@ -181,7 +181,7 @@ void test3Bin_2(big P, csprng &Rng)
 		cout << "R1: "; cotnum(R1, stdout);
 		powmod(y[0], k, P, R);
 		cout << "R : "; cotnum(R, stdout);
-		count -= compare(R, R1);
+		count += !compare(R, R1);
 	}
 	printf("correct: %d\n\n", count);
 	mirkill(r[0]); mirkill(r[1]); mirkill(r[2]);

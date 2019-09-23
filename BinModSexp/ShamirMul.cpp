@@ -9,7 +9,7 @@ void ShamirDecomposit(big k, big a, big b, big X, big Y, big P)
 	len = (k->len << 4) - ((31 - i) >> 1) - !(i & 1); // half bit length of k
 	sftbit(tmp2l, len, tmp2l);
 	copy(k, a);
-	divide(a, tmp2l, b);
+	divide(a, tmp2l, b); // bit length of a <= bit length of b
 	copy(X, Y);
 	for (i = 0; i < len; i++) {
 		multiply(Y, Y, Y);

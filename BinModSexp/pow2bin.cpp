@@ -22,22 +22,20 @@ void powmod2_Bin(big X, big a, big Y, big b, big P, big &Z)
 	big lst[4];
 	prepowmod2_Bin(X, Y, lst, P);
 	Z = mirvar(1);
-	for (j; i >= 0; i--, j = 31) {
+	for (--j; i >= 0; i--, j = 31) {
 		a1 = a->w[i];
 		b1 = b->w[i];
 		while (j) {
 			bita = (a1 >> j) & 1;
-			bitb = (b1 >> (j - 1)) & 2;
+			bitb = ((b1 >> j) & 1) << 1;
 			mulmod(Z, Z, P, Z);
 			index = bitb + bita;
-			if (index) {
-				mulmod(Z, lst[index], P, Z);
-			}
+			if (index) mulmod(Z, lst[index], P, Z);
 			j--;
 		}
 		index = (a1 & 1) + ((b1 & 1) << 1);
 		mulmod(Z, Z, P, Z);
-		mulmod(Z, lst[index], P, Z);
+		if (index) mulmod(Z, lst[index], P, Z);
 	}
 	mirkill(lst[0]); mirkill(lst[1]);
 	mirkill(lst[2]); mirkill(lst[3]);
@@ -53,31 +51,41 @@ void powmod_ShrBin(big X, big k, big P, big &Z)
 	mirkill(a); mirkill(b); mirkill(Y);
 }
 
-#define TEST2 1000
+#define TEST2 10000
 void test2Bin(big P, csprng &Rng)
 {
 	big X = mirvar(0), Y = mirvar(0), k = mirvar(0);
 	big a = mirvar(0), b = mirvar(0),
-		Z = mirvar(0), Z1 = mirvar(0);
-	strong_bigrand(&Rng, P, X);
+		Z = mirvar(0), Z1 = mirvar(0), Z2 = mirvar(0);
 
-	int count = TEST2;
+	//k = mirvar(0x69D); X = mirvar(3);
+	//nxprime(k, P);
+	strong_bigrand(&Rng, P, X);
+	cout << "P: "; cotnum(P, stdout);
+
+	int count = 0;
 	for (int i = 0; i < TEST2; i++) {
 		strong_bigrand(&Rng, P, k);
 		ShamirDecomposit(k, a, b, X, Y, P);
-		/*cout << "k: "; cotnum(k, stdout);
-		cout << "a: "; cotnum(a, stdout);
-		cout << "b: "; cotnum(b, stdout);
-		cout << "X: "; cotnum(X, stdout);*/
-
-		powmod2_Bin(X, a, Y, b, P, Z);
-		powmod2(X, a, Y, b, P, Z1);
-		count -= compare(Z, Z1);
+		powmod2_Bin(X, a, Y, b, P, Z1);
+		powmod2(X, a, Y, b, P, Z);
+		count += !compare(Z, Z1);
+		if (compare(Z, Z1)) {
+			powmod_Bin(X, k, P, Z2);
+			cout << "k: "; cotnum(k, stdout);
+			cout << "a: "; cotnum(a, stdout);
+			cout << "b: "; cotnum(b, stdout);
+			cout << "X: "; cotnum(X, stdout);
+			cout << "Z : "; cotnum(Z, stdout);
+			cout << "Z1: "; cotnum(Z1, stdout);
+			cout << "Z2: "; cotnum(Z2, stdout);
+			break;
+		}
 	}
 	printf("%d\n", count);
 	mirkill(X); mirkill(Y);
 	mirkill(k); mirkill(a); mirkill(b);
-	mirkill(Z); mirkill(Z1);
+	mirkill(Z); mirkill(Z1); mirkill(Z2);
 }
 
 #define REPEAT2 10
