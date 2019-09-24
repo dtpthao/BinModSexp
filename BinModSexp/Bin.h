@@ -2,7 +2,7 @@
 #define _BIN_H
 
 #include "Field.h"
-#include "ShamirMul.h"
+#include "shr_decomp.h"
 #include "Duration.h"
 
 // powbin.cpp

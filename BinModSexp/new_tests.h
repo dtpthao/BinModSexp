@@ -2,7 +2,7 @@
 #define _NEW_TESTS
 
 #include "Field.h"
-#include "ShamirMul.h"
+#include "shr_decomp.h"
 #include "Duration.h"
 #include "Bin.h"
 #include "JSF.h"

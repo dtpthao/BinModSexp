@@ -62,12 +62,12 @@ void powmodn_Bin(int n, big *r, big *y, big P, big &R)
 	for (i = 0; i < tmp; i++) mirkill(pre_lst[i]);
 }
 
-#define TESTn 10000
-#define N 4
+#define TESTn 1
+#define N 5
 void testnBin(big P, csprng &Rng)
 {
 	big k = mirvar(0);
-	big	R = mirvar(0), R1 = mirvar(0);
+	big	R = mirvar(0), R1 = mirvar(0), R2 = mirvar(0);
 	big r[N], y[N];
 	for (int i = 0; i < N; i++) {
 		r[i] = mirvar(1);
@@ -82,7 +82,7 @@ void testnBin(big P, csprng &Rng)
 	//char g[51] = "2843960000033430704672362122080271010298877412814";
 	//cinstr(y[0], g);
 
-	int count = TESTn;
+	int count = 0;
 	for (int i = 0; i < TESTn; i++) {
 		strong_bigrand(&Rng, P, k);
 		ShamirDecomposit_n(N, k, y[0], r, y, P);
@@ -95,15 +95,17 @@ void testnBin(big P, csprng &Rng)
 		//cout << "y2: "; cotnum(y[2], stdout);
 
 		powmodn_Bin(N, r, y, P, R1);
-		//cout << "R1: "; cotnum(R1, stdout);
+		powmodn(N, y, r, P, R2);
 		powmod(y[0], k, P, R);
-		//cout << "R : "; cotnum(R, stdout);
-		count -= compare(R, R1);
+		cout << "R2: "; cotnum(R2, stdout);
+		cout << "R1: "; cotnum(R1, stdout);
+		cout << "R : "; cotnum(R, stdout);
+		count += !compare(R, R1);
 	}
 	printf("correct: %d\n\n", count);
 	for (int i = 0; i < N; i++) {
 		mirkill(r[i]);
 		mirkill(y[i]);
 	}
-	mirkill(R); mirkill(R1); mirkill(k);
+	mirkill(R); mirkill(R1);mirkill(R2); mirkill(k);
 }

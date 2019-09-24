@@ -4,14 +4,14 @@
 #include <Windows.h>
 #include <time.h>
 #include "Field.h"
-#include "ShamirMul.h"
+#include "shr_decomp.h"
 
 typedef epoint* pepoint;
 
 struct Result {
-	double t[5] = { 0 };
-	double p[5] = { 0 };
-	unsigned int c[5] = { 0 };
+	double t[7] = { 0 };
+	double p[7] = { 0 };
+	unsigned int c[7] = { 0 };
 };
 
 typedef struct {

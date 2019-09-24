@@ -1,6 +1,5 @@
 #include "Duration.h"
 #include <iostream>
-#include "ShamirMul.h"
 #include "JSF.h"
 
 inline void startTimer(stopWatch *timer) {

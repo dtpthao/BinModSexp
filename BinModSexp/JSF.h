@@ -2,7 +2,7 @@
 #define _JSF_H
 
 #include "Field.h"
-#include "ShamirMul.h"
+#include "shr_decomp.h"
 #include "Bin.h"
 
 inline void subGenJSF(big Var1, big Var2, char &JSFi, bool &d, big RS);	//in use

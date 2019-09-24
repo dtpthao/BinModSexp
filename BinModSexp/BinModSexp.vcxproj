@@ -126,7 +126,7 @@
     <ClCompile Include="pow2bin.cpp" />
     <ClCompile Include="pow3bin.cpp" />
     <ClCompile Include="pownbin.cpp" />
-    <ClCompile Include="ShamirMul.cpp" />
+    <ClCompile Include="shr_decomp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="ms32.lib" />
@@ -139,7 +139,7 @@
     <ClInclude Include="miracl.h" />
     <ClInclude Include="new_tests.h" />
     <ClInclude Include="old_tests.h" />
-    <ClInclude Include="ShamirMul.h" />
+    <ClInclude Include="shr_decomp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

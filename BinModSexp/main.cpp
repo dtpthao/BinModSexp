@@ -34,7 +34,7 @@ int main()
 		//testnBin(P, Rng);
 		compares(m[i], P, Rng, res[i]);
 	}
-	cout << setw(19) << "" << "n=1           n=2           n=3           n=4        lib(n=4)\n";
+	cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=3)\n";
 	printcompares_bin(res, m);
 
 	mirkill(P);

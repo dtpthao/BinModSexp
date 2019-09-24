@@ -1,4 +1,4 @@
-#include "ShamirMul.h"
+#include "shr_decomp.h"
 
 void ShamirDecomposit(big k, big a, big b, big X, big Y, big P)
 {

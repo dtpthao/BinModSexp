@@ -1,5 +1,5 @@
-#ifndef _SHAMIR_MUL_H
-#define _SHAMIR_MUL_H
+#ifndef _SHR_DECOMP_H
+#define _SHR_DECOMP_H
 
 #include "Field.h"
 
