@@ -25,18 +25,17 @@ int main()
 
 	Result res[6];
 
-	for (int i = 0; i < 1; i++) {
-		//bigdig(m[i], 2, P);
-		bigdig(1024, 2, P);
+	for (int i = 0; i < 5; i++) {
+		bigdig(m[i], 2, P);
 		nxprime(P, P);
-		test2Bin(P, Rng);
+		//test2Bin(P, Rng);
 		//testMul3Bin(P, Rng);
 		//test3Bin_2(P, Rng);
 		//testnBin(P, Rng);
-		//compares(m[i], P, Rng, res[i]);
+		compares(m[i], P, Rng, res[i]);
 	}
-	//cout << setw(19) << "" << "n=1           n=2           n=3           n=4        lib(n=4)\n";
-	//printcompares_bin(res, m);
+	cout << setw(19) << "" << "n=1           n=2           n=3           n=4        lib(n=4)\n";
+	printcompares_bin(res, m);
 
 	mirkill(P);
 	mirexit();
