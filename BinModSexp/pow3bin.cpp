@@ -31,7 +31,7 @@ void powmod3_Bin(big r1, big r2, big r3, big y1, big y2, big y3, big P, big &R)
 	last32 = r3->w[i];
 	while (last32 >> j && j != 32) j++;
 
-	R = mirvar(1);
+	R->len = 1; R->w[0] = 1;
 	for (j; i >= 0; i--, j = 31) {
 		w1 = r1->w[i];
 		w2 = r2->w[i];
@@ -72,7 +72,7 @@ void powmod3_Bin(big *r, big *y, big P, big &R)
 	last32 = r[2]->w[i];
 	while (last32 >> j && j != 32) j++;
 
-	R = mirvar(1);
+	R->len = 1; R->w[0] = 1;
 	for (--j; i >= 0; i--, j = 31) {
 		w1 = r[0]->w[i];
 		w2 = r[1]->w[i];

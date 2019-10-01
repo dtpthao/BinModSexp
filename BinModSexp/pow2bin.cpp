@@ -21,7 +21,7 @@ void powmod2_Bin(big X, big a, big Y, big b, big P, big &Z)
 
 	big lst[4];
 	prepowmod2_Bin(X, Y, lst, P);
-	Z = mirvar(1);
+	Z->len = 1; Z->w[0] = 1;
 	for (--j; i >= 0; i--, j = 31) {
 		a1 = a->w[i];
 		b1 = b->w[i];

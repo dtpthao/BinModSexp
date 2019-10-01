@@ -1,6 +1,6 @@
 #include "new_tests.h"
 
-#define TESTS 20
+#define TESTS 5000
 #define REPEAT 10
 void compares(int len, big P, csprng &Rng, Result &res)
 {
@@ -27,7 +27,7 @@ void compares(int len, big P, csprng &Rng, Result &res)
 		strong_bigrand(&Rng, P, k);
 		//ShamirDecomposit_nk(3, k, r);
 
-		for (int i = 0; i < REPEAT; i++) {
+		for (int j = 0; j < REPEAT; j++) {
 			// n = 1
 			startTimer(&timer1);
 			powmod_Bin(g, k, P, R1);           // R1 = g^k mod P
@@ -67,10 +67,10 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			dur5 = getTickCount(&timer5);
 			min5 = (min5 < dur5) ? min5 : dur5;
 
-			// lib, n = 3
+			// lib, n = 5
 			startTimer(&timer6);
-			ShamirDecomposit_n(3, k, g, r, y, P);
-			powmodn(3, y, r, P, R);
+			ShamirDecomposit_n(5, k, g, r, y, P);
+			powmodn(5, y, r, P, R);
 			//powmod(g, k, P, R);
 			stopTimer(&timer6);
 			dur6 = getTickCount(&timer6);

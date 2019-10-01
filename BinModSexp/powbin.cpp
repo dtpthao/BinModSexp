@@ -3,7 +3,6 @@
 void powmod_Bin(big X, big k, big P, big &Z)
 {
 	unsigned int len, i = 31;
-	Z = mirvar(1);
 
 	len = k->w[k->len - 1];
 	if (len == 0) return;

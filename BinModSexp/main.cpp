@@ -18,7 +18,7 @@ int main()
 	M->IOBASE = 16;
 	csprng Rng;
 	InitStrongRNG(&Rng);
-	int m[5] = { 192, 256, 384, 512, 1024};
+	int m[5] = { 256, 384, 512, 1024, 1536};
 	big P = mirvar(1);
 	//char sP[51] = "11692013098647223345629478661730264157247460344008";
 	//cinstr(P, sP);
@@ -29,12 +29,11 @@ int main()
 		bigdig(m[i], 2, P);
 		nxprime(P, P);
 		//test2Bin(P, Rng);
-		//testMul3Bin(P, Rng);
 		//test3Bin_2(P, Rng);
 		//testnBin(P, Rng);
 		compares(m[i], P, Rng, res[i]);
 	}
-	cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=3)\n";
+	cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=5)\n";
 	printcompares_bin(res, m);
 
 	mirkill(P);

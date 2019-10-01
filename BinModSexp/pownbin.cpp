@@ -32,7 +32,7 @@ void powmodn_Bin(int n, big *r, big *y, big P, big &R)
 	last32 = r[n - 1]->w[i];
 	while (last32 >> j && j != 32) j++;
 
-	R = mirvar(1);
+	R->len = 1; R->w[0] = 1;
 	for (--j; i >= 0; i--, j = 31) {
 		tmp = 0;
 		for (int ii = 0; ii < n; ii++) w[ii] = r[ii]->w[i];

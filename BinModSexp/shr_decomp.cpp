@@ -65,8 +65,8 @@ void ShamirDecomposit3(big k, big g, big *r, big *y, big P)
 	DWORD l, i = 31, l1, l2, l3;
 	big sft = mirvar(1);
 	for (int ii = 0; ii < 3; ii++) {
-		r[ii] = mirvar(1);
-		y[ii] = mirvar(1);
+		r[ii]->len = 1; r[ii]->w[0] = 1;
+		y[ii]->len = 1; r[ii]->w[0] = 1;
 	}
 
 	while (!(k->w[k->len - 1] & (1 << i))) i--;
@@ -141,8 +141,8 @@ void ShamirDecomposit_n(int n, big k, big g, big *r, big *y, big P)
 	DWORD l, i;
 	big sft = mirvar(1);
 	for (i = 0; i < n; i++) {
-		r[i] = mirvar(1);
-		y[i] = mirvar(1);
+		r[i]->len = 1; r[i]->w[0] = 1;
+		y[i]->len = 1; y[i]->w[0] = 1;
 	}
 	i = 31;
 	while (!(k->w[k->len - 1] & (1 << i))) i--;
