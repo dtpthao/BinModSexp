@@ -115,6 +115,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="d-JSF.cpp" />
     <ClCompile Include="new_tests.cpp" />
     <ClCompile Include="powbin.cpp" />
     <ClCompile Include="Duration.cpp" />

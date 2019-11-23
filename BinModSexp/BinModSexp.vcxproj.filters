@@ -16,6 +16,9 @@
     <Filter Include="Source Files\bin">
       <UniqueIdentifier>{6fd2edcb-836b-41e7-9da5-18754868c3c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\JSF">
+      <UniqueIdentifier>{18bcfcb4-623e-4dd0-bd56-1dd36a8cb064}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -25,9 +28,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Field.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="JSF.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mrpower.c">
@@ -53,6 +53,12 @@
     </ClCompile>
     <ClCompile Include="shr_decomp.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JSF.cpp">
+      <Filter>Source Files\JSF</Filter>
+    </ClCompile>
+    <ClCompile Include="d-JSF.cpp">
+      <Filter>Source Files\JSF</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

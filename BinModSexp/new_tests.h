@@ -7,7 +7,7 @@
 #include "Bin.h"
 #include "JSF.h"
 
-#define TEST	5000
+#define TEST	500
 #define LIB		3
 
 void compares(int len, big P, csprng &Rng, Result &res);
