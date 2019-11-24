@@ -19,7 +19,7 @@ void prepowmodn_Bin(int n, big *y, big *pre_list, big P)
 	}
 }
 
-// R = y1^r1 * y2^r2 * ... * yn^rn;
+// R = y1^r1 * y2^r2 * ... * yn^rn mod P;
 void powmodn_Bin(int n, big *r, big *y, big P, big &R)
 {
 	int i, j = 0, tmp;

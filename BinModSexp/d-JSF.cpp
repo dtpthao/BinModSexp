@@ -2,7 +2,7 @@
 
 // Generate d-dimensional Simple JSF Form
 // d < 32
-DWORD GendJSF(int d, big *k, int **dJSF)
+DWORD GendJSF(int d, big *r, int **dJSF)
 {
 	int i, j, a0, a1, tmp;
 	int A[2];
@@ -17,6 +17,7 @@ DWORD GendJSF(int d, big *k, int **dJSF)
 		if (x[i]->w[0] & 1) A[a0] += 1 << i;
 		loop |= !(x[i]->len == 1 && x[i]->w[0] == 0 || x[i]->len == 0);
 	}
+
 	while (loop) {
 		a1 = a0 ^ 1;
 		A[a1] = 0;
@@ -34,12 +35,13 @@ DWORD GendJSF(int d, big *k, int **dJSF)
 			tmp = (A[a0] | A[a1]) ^ A[a1];
 			A[a1] |= A[a0];
 		}
+
 		i = 0;
 		while (tmp) {
-			if (tmp & 1) dJSF[i][lenJSF] = -dJSF[i][lenJSF];
+			if (tmp & 1) dJSF[i][lenJSF] = -dJSF[i++][lenJSF];
 			tmp >>= 1;
-			i++;
 		}
+
 		loop = false;
 		for (i = 0; i < d; i++) {
 			sftbit(x[i], -1, x[i]);
@@ -54,12 +56,40 @@ DWORD GendJSF(int d, big *k, int **dJSF)
 	return lenJSF;
 }
 
+void PreMul_dJSF(int d, big *y, big P, big *plist)
+{
+
+}
+
+// R = y1^r1 * y2^r2 * ... * yn^rd mod P;
+void powmod_dJSF(int d, big *r, big *y, big P, big &R)
+{
+	int tmp = 1, idx0, idx = 0, i, j;
+	int **dJSF = new int*[d];
+	for (i = 0; i < d; i++) dJSF[i] = new int[300];
+	DWORD lendJSF;
+	for (i = 0; i < d; i++) tmp *= 3;
+	big *plist = new big[tmp];
+	
+	lendJSF = GendJSF(d, r, dJSF);
+	R->len = 1; R->w[0] = 0;
+	idx0 = tmp / 2;
+	for (i = lendJSF - 1; i >= 0; i--) {
+		idx = idx0;
+		for (j = 0, tmp = 1; j < d; j++, tmp *= 3) {
+			idx -= tmp * dJSF[j][i];
+		}
+		mulmod(R, R, P, R);
+		if (idx != idx0) mulmod(R, plist[idx], P, R);
+	}
+}
+
 void test_GendJSF(big P, csprng &Rng)
 {
-	const int d = 4;
+	const int d = 3;
 	big *x = new big[d];
 	big x2 = mirvar(0);
-	DWORD lendJSF = 5;
+	DWORD lendJSF;
 	//x[0] = mirvar(8);
 	//x[1] = mirvar(7);
 	//x[2] = mirvar(5);
@@ -74,9 +104,9 @@ void test_GendJSF(big P, csprng &Rng)
 	strong_bigrand(&Rng, P, k);
 	ShamirDecomposit_nk(d, k, x);
 	lendJSF = GendJSF(d, x, dJSF);
-
+	cout << lendJSF << endl;
 	for (int i = 0; i < d; i++) {
-		cotnum(x[i], stdout); fflush(stdout);
+		//cotnum(x[i], stdout);
 		x2 = mirvar(0);
 		cout << "JSF[" << i << "]: ";
 		for (int j = lendJSF - 1; j >= 0; j--) {
@@ -85,9 +115,10 @@ void test_GendJSF(big P, csprng &Rng)
 			printf("%2d", dJSF[i][j]);
 		}
 		cout << endl;
-		cotnum(x2, stdout);
+		//cotnum(x2, stdout);
 		mirkill(x[i]);
 		mirkill(x2);
 	}
 	mirkill(k);
 }
+
