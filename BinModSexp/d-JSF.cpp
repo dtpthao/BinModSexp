@@ -13,7 +13,7 @@ DWORD GendJSF(int d, big *r, int **dJSF)
 	bool loop = false;
 	for (; i < d; i++) {
 		x[i] = mirvar(0);
-		copy(k[i], x[i]);
+		copy(r[i], x[i]);
 		if (x[i]->w[0] & 1) A[a0] += 1 << i;
 		loop |= !(x[i]->len == 1 && x[i]->w[0] == 0 || x[i]->len == 0);
 	}
@@ -56,7 +56,7 @@ DWORD GendJSF(int d, big *r, int **dJSF)
 	return lenJSF;
 }
 
-void PreMul_dJSF(int d, big *y, big P, big *plist)
+void preMul_dJSF(int d, big *y, big P, big *plist)
 {
 
 }
@@ -71,6 +71,7 @@ void powmod_dJSF(int d, big *r, big *y, big P, big &R)
 	for (i = 0; i < d; i++) tmp *= 3;
 	big *plist = new big[tmp];
 	
+	preMul_dJSF(d, y, P, plist);
 	lendJSF = GendJSF(d, r, dJSF);
 	R->len = 1; R->w[0] = 0;
 	idx0 = tmp / 2;
