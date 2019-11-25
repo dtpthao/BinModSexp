@@ -36,7 +36,8 @@ int main()
 	//cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=5)\n";
 	//printcompares_bin(res, m);
 
-	test_GendJSF(P, Rng);
+	//test_GendJSF(P, Rng);
+	test_powmoddJSF(P, Rng);
 
 	mirkill(P);
 	mirexit();

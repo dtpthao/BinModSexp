@@ -58,60 +58,62 @@ DWORD GendJSF(int d, big *r, int **dJSF)
 
 void prePowMod_dJSF(int d, int len, big *y, big P, big *plist)
 {
-	int i, j, k, i0 = len/2, upi, downi;
+	int i, j, k, i0 = len >> 1, upi, downi;
 	int *idxs = new int[d];
-	//for (i = 0, tmp = 1; i < d; i++, tmp *= 3) {
-	//	idxs[i] = idx0 - tmp;
-	//	idx = idx0 + tmp;
-	//	copy(y[i], plist[idx0 - tmp]);
-	//	copy(y[i], plist[idx]);
-	//	xgcd(plist[idx], P, plist[idx], plist[idx], plist[idx]);	// 1/y[i] mod P
-	//}
-	//for (i = 1, j = 3; i < d; i++, j *= 3) {
-	//	tmp = j/2;
-	//	for (k = 1; k <= tmp; k++) {
-	//		//copy(plist[idxs[i]], plist[idx0 - k]);
-	//		mulmod(plist[idxs[i]], plist[idx0 + k], P, plist[idxs[i] + k]);
-	//		mulmod(plist[idxs[i]], plist[idx0 - k], P, plist[idxs[i] - k]);
-	//	}
-	//}
+
 	for (i = 0, j = 1; i < d; i++, j *= 3) {
 		upi = i0 + j;
 		downi = i0 - j;
 		copy(y[i], plist[downi]);								// y[i]
 		copy(y[i], plist[upi]);
 		xgcd(plist[upi], P, plist[upi], plist[upi], plist[upi]);// 1/y[i]
-		for (k = 1; k < (j >> 1); k++) {
+		//printf("indexes: %d\t%d\n", upi, downi);
+		for (k = 1; k <= (j >> 1); k++) {
 			mulmod(plist[upi], plist[i0 + k], P, plist[upi + k]);
 			mulmod(plist[upi], plist[i0 - k], P, plist[upi - k]);
 			mulmod(plist[downi], plist[i0 + k], P, plist[downi + k]);
 			mulmod(plist[downi], plist[i0 - k], P, plist[downi - k]);
+			//printf("indexes: %d\t%d\t%d\t%d\n", upi + k, upi - k, downi + k, downi - k);
 		}
 	}
 }
 
 // R = y1^r1 * y2^r2 * ... * yn^rd mod P;
-void powmod_dJSF(int d, big *r, big *y, big P, big &R)
+void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 {
-	int tmp = 1, idx0, idx = 0, i, j;
+	int tmp = 1, I0, idx = 0, i, j;
 	int **dJSF = new int*[d]; 
 	for (i = 0; i < d; i++) dJSF[i] = new int[300];
 	DWORD lendJSF;
 	for (i = 0; i < d; i++) tmp *= 3;
 	big *plist = new big[tmp];
+	for (i = 0; i < tmp; i++) plist[i] = mirvar(0);
 	
-	idx0 = tmp / 2;
-	prePowMod_dJSF(d, idx0, y, P, plist);
+	I0 = tmp >> 1;
+	prePowMod_dJSF(d, tmp, y, P, plist);
 	lendJSF = GendJSF(d, r, dJSF);
-	R->len = 1; R->w[0] = 0;
+	//for (i = 0; i < tmp; i++) {
+	//	cout << "pl[" << i << "]: "; cotnum(plist[i], stdout);
+	//}
+	//for (int i = 0; i < d; i++) {
+	//	cout << "JSF[" << i << "]: ";
+	//	for (int j = lendJSF - 1; j >= 0; j--) printf("%2d", dJSF[i][j]);
+	//	cout << endl;
+	//}
+	R->len = 1; R->w[0] = 1;
 	for (i = lendJSF - 1; i >= 0; i--) {
-		idx = idx0;
+		idx = I0;
 		for (j = 0, tmp = 1; j < d; j++, tmp *= 3) {
 			idx -= tmp * dJSF[j][i];
 		}
 		mulmod(R, R, P, R);
-		if (idx != idx0) mulmod(R, plist[idx], P, R);
+		//cout << "pl[" << idx << "]: "; cotnum(plist[idx], stdout);
+		//cout << "R : "; cotnum(R, stdout);
+		if (idx != I0) mulmod(R, plist[idx], P, R);
+		//cout << "R : "; cotnum(R, stdout);
 	}
+
+	for (i = 0; i < tmp; i++) mirkill(plist[i]);
 }
 
 void test_GendJSF(big P, csprng &Rng)
@@ -120,10 +122,6 @@ void test_GendJSF(big P, csprng &Rng)
 	big *x = new big[d];
 	big x2 = mirvar(0);
 	DWORD lendJSF;
-	//x[0] = mirvar(8);
-	//x[1] = mirvar(7);
-	//x[2] = mirvar(5);
-	//x[3] = mirvar(4);
 
 	int **dJSF = new int*[d];
 	for (int i = 0; i < d; i++) {
@@ -150,5 +148,69 @@ void test_GendJSF(big P, csprng &Rng)
 		mirkill(x2);
 	}
 	mirkill(k);
+}
+
+void test_powmoddJSF(big P, csprng &Rng)
+{
+	const int d = 3;
+	big *r = new big[d];
+	big *y = new big[d];
+	big k = mirvar(0), g = mirvar(0);
+	big Z = mirvar(0), Z1 = mirvar(0), Z2 = mirvar(0);
+	DWORD lendJSF;
+	int **dJSF = new int*[d];
+	for (int i = 0; i < d; i++) {
+		r[i] = mirvar(0);
+		y[i] = mirvar(0);
+		dJSF[i] = new int[200];
+	}
+
+	//strong_bigrand(&Rng, P, g);
+	int count = 0;
+	strong_bigdig(&Rng, 2, 16, g);
+	nxprime(g, P);
+	r[0] = mirvar(0x3);
+	r[1] = mirvar(0x2);
+	r[2] = mirvar(0x5);
+	y[0] = mirvar(0x4);
+	y[1] = mirvar(0x5);
+	y[2] = mirvar(0x2);
+	P = mirvar(0xB);
+	for (int i = 0; i < 1; i++) {
+		//strong_bigdig(&Rng, 2, 16, k);
+		//strong_bigrand(&Rng, P, k);
+		//ShamirDecomposit_n(d, k, g, r, y, P);
+		powmod_dJSF(d, y, r, P, Z);
+		powmodn(d, y, r, P, Z1);
+		count += !compare(Z, Z1);
+		cout << "P : "; cotnum(P, stdout);
+		cout << "g : "; cotnum(g, stdout);
+		cout << "k : "; cotnum(k, stdout);
+		for (int j = 0; j < d; j++) { cout << "ri: "; cotnum(r[j], stdout); }
+		for (int j = 0; j < d; j++) { cout << "yi: "; cotnum(y[j], stdout); }
+		cout << "Z : "; cotnum(Z, stdout);
+		cout << "Z1: "; cotnum(Z1, stdout);
+		//if (compare(Z, Z1)) {
+		//	cout << "k: "; cotnum(k, stdout);
+		//	cout << "a: "; cotnum(a, stdout);
+		//	cout << "b: "; cotnum(b, stdout);
+		//	cout << "X: "; cotnum(X, stdout);
+		//	cout << "Y: "; cotnum(Y, stdout);
+		//	cout << "P: "; cotnum(P, stdout);
+		//	cout << "Z : "; cotnum(Z, stdout);
+		//	cout << "Z1: "; cotnum(Z1, stdout);
+		//	powmod2_Bin(X, a, Y, b, P, Z2);
+		//	cout << "Z2: "; cotnum(Z2, stdout);
+		//	break;
+		//}
+	}
+
+	for (int i = 0; i < d; i++) {
+		mirkill(r[i]);
+		mirkill(y[i]);
+	}
+	printf("%d\n", count);
+	mirkill(k);mirkill(g);
+	mirkill(Z); mirkill(Z1); mirkill(Z2);
 }
 
