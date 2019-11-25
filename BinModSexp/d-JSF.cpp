@@ -56,25 +56,54 @@ DWORD GendJSF(int d, big *r, int **dJSF)
 	return lenJSF;
 }
 
-void preMul_dJSF(int d, big *y, big P, big *plist)
+void prePowMod_dJSF(int d, int len, big *y, big P, big *plist)
 {
-
+	int i, j, k, i0 = len/2, upi, downi;
+	int *idxs = new int[d];
+	//for (i = 0, tmp = 1; i < d; i++, tmp *= 3) {
+	//	idxs[i] = idx0 - tmp;
+	//	idx = idx0 + tmp;
+	//	copy(y[i], plist[idx0 - tmp]);
+	//	copy(y[i], plist[idx]);
+	//	xgcd(plist[idx], P, plist[idx], plist[idx], plist[idx]);	// 1/y[i] mod P
+	//}
+	//for (i = 1, j = 3; i < d; i++, j *= 3) {
+	//	tmp = j/2;
+	//	for (k = 1; k <= tmp; k++) {
+	//		//copy(plist[idxs[i]], plist[idx0 - k]);
+	//		mulmod(plist[idxs[i]], plist[idx0 + k], P, plist[idxs[i] + k]);
+	//		mulmod(plist[idxs[i]], plist[idx0 - k], P, plist[idxs[i] - k]);
+	//	}
+	//}
+	for (i = 0, j = 1; i < d; i++, j *= 3) {
+		upi = i0 + j;
+		downi = i0 - j;
+		copy(y[i], plist[downi]);								// y[i]
+		copy(y[i], plist[upi]);
+		xgcd(plist[upi], P, plist[upi], plist[upi], plist[upi]);// 1/y[i]
+		for (k = 1; k < (j >> 1); k++) {
+			mulmod(plist[upi], plist[i0 + k], P, plist[upi + k]);
+			mulmod(plist[upi], plist[i0 - k], P, plist[upi - k]);
+			mulmod(plist[downi], plist[i0 + k], P, plist[downi + k]);
+			mulmod(plist[downi], plist[i0 - k], P, plist[downi - k]);
+		}
+	}
 }
 
 // R = y1^r1 * y2^r2 * ... * yn^rd mod P;
 void powmod_dJSF(int d, big *r, big *y, big P, big &R)
 {
 	int tmp = 1, idx0, idx = 0, i, j;
-	int **dJSF = new int*[d];
+	int **dJSF = new int*[d]; 
 	for (i = 0; i < d; i++) dJSF[i] = new int[300];
 	DWORD lendJSF;
 	for (i = 0; i < d; i++) tmp *= 3;
 	big *plist = new big[tmp];
 	
-	preMul_dJSF(d, y, P, plist);
+	idx0 = tmp / 2;
+	prePowMod_dJSF(d, idx0, y, P, plist);
 	lendJSF = GendJSF(d, r, dJSF);
 	R->len = 1; R->w[0] = 0;
-	idx0 = tmp / 2;
 	for (i = lendJSF - 1; i >= 0; i--) {
 		idx = idx0;
 		for (j = 0, tmp = 1; j < d; j++, tmp *= 3) {
