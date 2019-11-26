@@ -20,24 +20,28 @@ int main()
 	InitStrongRNG(&Rng);
 	int m[5] = { 256, 384, 512, 1024, 1536};
 	big P = mirvar(1);
-	char sP[51] = "11692013098647223345629478661730264157247460344008";
-	cinstr(P, sP);
+	//char sP[51] = "11692013098647223345629478661730264157247460344008";
+	//cinstr(P, sP);
 
 	Result res[6];
 
-	//for (int i = 0; i < 5; i++) {
-	//	bigdig(m[i], 2, P);
-	//	nxprime(P, P);
-	//	//test2Bin(P, Rng);
-	//	//test3Bin_2(P, Rng);
-	//	//testnBin(P, Rng);
-	//	compares(m[i], P, Rng, res[i]);
-	//}
-	//cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=5)\n";
-	//printcompares_bin(res, m);
+	for (int i = 0; i < 5; i++) {
+		bigdig(m[i], 2, P);
+		nxprime(P, P);
+		//cout << "m = " << m[i] << endl;
+		//test2Bin(P, Rng);
+		//test3Bin_2(P, Rng);
+		//testnBin(P, Rng);
+		//test_powmoddJSF(P, Rng);
+		compares(m[i], P, Rng, res[i]);
+	}
+	cout << setw(19) << "" << "n=1           n=2           n=3           n=4           JSF3        lib(n=4)\n";
+	printcompares_bin(res, m);
 
 	//test_GendJSF(P, Rng);
-	test_powmoddJSF(P, Rng);
+	//bigdig(1024, 2, P);
+	//nxprime(P, P);
+	//test_powmoddJSF(P, Rng);
 
 	mirkill(P);
 	mirexit();

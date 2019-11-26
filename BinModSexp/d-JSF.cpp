@@ -83,7 +83,7 @@ void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 {
 	int tmp = 1, I0, idx = 0, i, j;
 	int **dJSF = new int*[d]; 
-	for (i = 0; i < d; i++) dJSF[i] = new int[300];
+	for (i = 0; i < d; i++) dJSF[i] = new int[1000];
 	DWORD lendJSF;
 	for (i = 0; i < d; i++) tmp *= 3;
 	big *plist = new big[tmp];
@@ -92,14 +92,6 @@ void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 	I0 = tmp >> 1;
 	prePowMod_dJSF(d, tmp, y, P, plist);
 	lendJSF = GendJSF(d, r, dJSF);
-	//for (i = 0; i < tmp; i++) {
-	//	cout << "pl[" << i << "]: "; cotnum(plist[i], stdout);
-	//}
-	//for (int i = 0; i < d; i++) {
-	//	cout << "JSF[" << i << "]: ";
-	//	for (int j = lendJSF - 1; j >= 0; j--) printf("%2d", dJSF[i][j]);
-	//	cout << endl;
-	//}
 	R->len = 1; R->w[0] = 1;
 	for (i = lendJSF - 1; i >= 0; i--) {
 		idx = I0;
@@ -107,10 +99,7 @@ void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 			idx -= tmp * dJSF[j][i];
 		}
 		mulmod(R, R, P, R);
-		//cout << "pl[" << idx << "]: "; cotnum(plist[idx], stdout);
-		//cout << "R : "; cotnum(R, stdout);
 		if (idx != I0) mulmod(R, plist[idx], P, R);
-		//cout << "R : "; cotnum(R, stdout);
 	}
 
 	for (i = 0; i < tmp; i++) mirkill(plist[i]);
@@ -162,34 +151,46 @@ void test_powmoddJSF(big P, csprng &Rng)
 	for (int i = 0; i < d; i++) {
 		r[i] = mirvar(0);
 		y[i] = mirvar(0);
-		dJSF[i] = new int[200];
+		dJSF[i] = new int[300];
 	}
 
-	//strong_bigrand(&Rng, P, g);
+	strong_bigrand(&Rng, P, g);
 	int count = 0;
-	strong_bigdig(&Rng, 2, 16, g);
-	nxprime(g, P);
-	r[0] = mirvar(0x3);
-	r[1] = mirvar(0x2);
-	r[2] = mirvar(0x5);
-	y[0] = mirvar(0x4);
-	y[1] = mirvar(0x5);
-	y[2] = mirvar(0x2);
-	P = mirvar(0xB);
-	for (int i = 0; i < 1; i++) {
+	//strong_bigdig(&Rng, 2, 16, g);
+	//nxprime(g, P);
+	//r[0] = mirvar(0x3);
+	//r[1] = mirvar(0x2);
+	//r[2] = mirvar(0x5);
+	//y[0] = mirvar(0x4);
+	//y[1] = mirvar(0x5);
+	//y[2] = mirvar(0x2);
+	//P = mirvar(0xB);
+//	char sP[300] = "BFF9F8B8706AAA8FC1AE08E4A6C2B85D026748CCFCB092162BCF1FF6169417375AEDADFC015\
+//90DEF9F474505A7C46DC24EDDBCD1CF3CD3AC8D6625774CE48C6E6963A020D0857A9F6976994C37A754F00267B82705\
+//D81061CD281BB708712888623B6D2C45E6AFC6DDB84C51641D1FEFF6E598225E893F22577156E9E5C7235B";
+//	char sg[260] = "39AAB800A5913F33EE72659ABC7FB7D9059E58838D5BACA1AC4EF7A26D5F02D974C3E007991\
+//CAC954C55E7710259DA28691CDD4684387938918BAE3221760FA0B10745D4ACF6A4D2705849B639CA8A9633CB4E80EC\
+//BCF490A2BCA2AA182E9398F15D4BA57985D1FECBDCEE9433B48F426D0988625DD71A7CC43C2C803082F940";
+//	char sk[260] = "7C446723D62968564DBD4C0C8F457A3C210A694FBD25C306B6E3892833BD26A348041FEEC75\
+//342D962A5C60A93B37F03EDCDA7D9612D53C44CD16469F2883D41B00A2AF49F4C9AD7BD82D01F6DD7D4B14AE0189341\
+//875407AD80F18F957F62AB553C211126E0B31500856B129E49B6E90DC490881204F6304AC61755D2905501";
+//	cinstr(P, sP);
+//	cinstr(g, sg);
+//	cinstr(k, sk);
+	for (int i = 0; i < 5000; i++) {
 		//strong_bigdig(&Rng, 2, 16, k);
-		//strong_bigrand(&Rng, P, k);
-		//ShamirDecomposit_n(d, k, g, r, y, P);
+		strong_bigrand(&Rng, P, k);
+		ShamirDecomposit_n(d, k, g, r, y, P);
 		powmod_dJSF(d, y, r, P, Z);
 		powmodn(d, y, r, P, Z1);
 		count += !compare(Z, Z1);
-		cout << "P : "; cotnum(P, stdout);
-		cout << "g : "; cotnum(g, stdout);
-		cout << "k : "; cotnum(k, stdout);
-		for (int j = 0; j < d; j++) { cout << "ri: "; cotnum(r[j], stdout); }
-		for (int j = 0; j < d; j++) { cout << "yi: "; cotnum(y[j], stdout); }
-		cout << "Z : "; cotnum(Z, stdout);
-		cout << "Z1: "; cotnum(Z1, stdout);
+		//cout << "P : "; cotnum(P, stdout);
+		//cout << "g : "; cotnum(g, stdout);
+		//cout << "k : "; cotnum(k, stdout);
+		//for (int j = 0; j < d; j++) { cout << "ri: "; cotnum(r[j], stdout); }
+		//for (int j = 0; j < d; j++) { cout << "yi: "; cotnum(y[j], stdout); }
+		//cout << "Z : "; cotnum(Z, stdout);
+		//cout << "Z1: "; cotnum(Z1, stdout);
 		//if (compare(Z, Z1)) {
 		//	cout << "k: "; cotnum(k, stdout);
 		//	cout << "a: "; cotnum(a, stdout);

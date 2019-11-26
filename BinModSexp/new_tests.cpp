@@ -1,6 +1,6 @@
 #include "new_tests.h"
 
-#define TESTS 5000
+#define TESTS 1000
 #define REPEAT 10
 void compares(int len, big P, csprng &Rng, Result &res)
 {
@@ -16,7 +16,7 @@ void compares(int len, big P, csprng &Rng, Result &res)
 	big	g = mirvar(1), k = mirvar(1),
 		R = mirvar(1), R1 = mirvar(1), R5 = mirvar(1),
 		R2 = mirvar(1), R3 = mirvar(1), R4 = mirvar(1);
-	big r[4], y[4];
+	big r[5], y[5];
 	r[0] = mirvar(0); r[1] = mirvar(0); r[2] = mirvar(0); r[3] = mirvar(0); r[4] = mirvar(0);
 	y[0] = mirvar(0); y[1] = mirvar(0); y[2] = mirvar(0); y[3] = mirvar(0); y[4] = mirvar(0);
 
@@ -59,18 +59,19 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			dur4 = getTickCount(&timer4);
 			min4 = (min4 < dur4) ? min4 : dur4;
 
-			// n = 5
+			// n = 3
 			startTimer(&timer5);
-			ShamirDecomposit_n(5, k, g, r, y, P);
-			powmodn_Bin(5, r, y, P, R5);
+			ShamirDecomposit_n(3, k, g, r, y, P);
+			//powmod_dJSF(3, y, r, P, R5);
+			powmodn_Bin(3, r, y, P, R5);
 			stopTimer(&timer5);
 			dur5 = getTickCount(&timer5);
 			min5 = (min5 < dur5) ? min5 : dur5;
 
-			// lib, n = 5
+			// lib, n = 4
 			startTimer(&timer6);
-			ShamirDecomposit_n(5, k, g, r, y, P);
-			powmodn(5, y, r, P, R);
+			ShamirDecomposit_n(4, k, g, r, y, P);
+			powmodn(4, y, r, P, R);
 			//powmod(g, k, P, R);
 			stopTimer(&timer6);
 			dur6 = getTickCount(&timer6);

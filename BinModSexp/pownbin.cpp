@@ -86,13 +86,13 @@ void testnBin(big P, csprng &Rng)
 	for (int i = 0; i < TESTn; i++) {
 		strong_bigrand(&Rng, P, k);
 		ShamirDecomposit_n(N, k, y[0], r, y, P);
-		//cout << "k: "; cotnum(k, stdout);
-		//cout << "r0: "; cotnum(r[0], stdout);
-		//cout << "r1: "; cotnum(r[1], stdout);
-		//cout << "r2: "; cotnum(r[2], stdout);
-		//cout << "y0: "; cotnum(y[0], stdout);
-		//cout << "y1: "; cotnum(y[1], stdout);
-		//cout << "y2: "; cotnum(y[2], stdout);
+		cout << "k: "; cotnum(k, stdout);
+		cout << "r0: "; cotnum(r[0], stdout);
+		cout << "r1: "; cotnum(r[1], stdout);
+		cout << "r2: "; cotnum(r[2], stdout);
+		cout << "y0: "; cotnum(y[0], stdout);
+		cout << "y1: "; cotnum(y[1], stdout);
+		cout << "y2: "; cotnum(y[2], stdout);
 
 		powmodn_Bin(N, r, y, P, R1);
 		powmodn(N, y, r, P, R2);

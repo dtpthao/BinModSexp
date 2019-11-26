@@ -16,6 +16,7 @@ void powmod_JSF(big *lst, big a, big b, big P, big Z);
 void testJSF(big P, csprng &Rng);
 
 /* d-JSF.cpp */
+void powmod_dJSF(int d, big *y, big *r, big P, big &R);
 void test_GendJSF(big P, csprng &Rng);
 void test_powmoddJSF(big P, csprng &Rng);
 

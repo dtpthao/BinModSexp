@@ -22,6 +22,7 @@ void InitStrongRNG(csprng *Rng);
 
 void getGF(big &P, CONSTANTS_F2m f2m);
 
+// multiply and divide
 void mulmod(big X, big Y, big P, big Z);
 
 #endif
