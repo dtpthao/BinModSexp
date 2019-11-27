@@ -45,7 +45,15 @@ DWORD GendJSF(int d, big *r, int **dJSF)
 		loop = false;
 		for (i = 0; i < d; i++) {
 			sftbit(x[i], -1, x[i]);
-			if (dJSF[i][lenJSF] == -1) incr(x[i], 1, x[i]);
+			if (dJSF[i][lenJSF] == -1) {
+				//cout << "x[" << i << "]: "; cotnum(x[i], stdout);
+				//incr(x[i], 1, x[i]);
+				if (x[i]->len == 0) x[i]->len = 1;
+				if (x[i]->w[0] ^ 0xffffffff) x[i]->w[0]++;
+				else incr(x[i], 1, x[i]);
+				//cout << "x[" << i << "]: "; cotnum(x[i], stdout);
+				//cout << endl;
+			}
 			loop |= !(x[i]->len == 1 && x[i]->w[0] == 0 || x[i]->len == 0);
 		}
 		lenJSF++;
@@ -83,7 +91,7 @@ void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 {
 	int tmp = 1, I0, idx = 0, i, j;
 	int **dJSF = new int*[d]; 
-	for (i = 0; i < d; i++) dJSF[i] = new int[1000];
+	for (i = 0; i < d; i++) dJSF[i] = new int[700];
 	DWORD lendJSF;
 	for (i = 0; i < d; i++) tmp *= 3;
 	big *plist = new big[tmp];
@@ -101,7 +109,9 @@ void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 		mulmod(R, R, P, R);
 		if (idx != I0) mulmod(R, plist[idx], P, R);
 	}
-
+	
+	for (i = 0; i < d; i++) delete[] dJSF[i];
+	delete[] dJSF;
 	for (i = 0; i < tmp; i++) mirkill(plist[i]);
 }
 
@@ -117,13 +127,16 @@ void test_GendJSF(big P, csprng &Rng)
 		x[i] = mirvar(0);
 		dJSF[i] = new int[200];
 	}
-	big k = mirvar(0);
+	big k = mirvar(0x1ED627);
 	strong_bigrand(&Rng, P, k);
+	//strong_bigdig(&Rng, 9, 16, k);
+	//char sk[10] = "F4C9F1076";
+	//cinstr(k, sk);
+	//cout << "k : "; cotnum(k, stdout);
 	ShamirDecomposit_nk(d, k, x);
 	lendJSF = GendJSF(d, x, dJSF);
 	cout << lendJSF << endl;
 	for (int i = 0; i < d; i++) {
-		//cotnum(x[i], stdout);
 		x2 = mirvar(0);
 		cout << "JSF[" << i << "]: ";
 		for (int j = lendJSF - 1; j >= 0; j--) {
@@ -132,9 +145,10 @@ void test_GendJSF(big P, csprng &Rng)
 			printf("%2d", dJSF[i][j]);
 		}
 		cout << endl;
-		//cotnum(x2, stdout);
-		mirkill(x[i]);
+		cotnum(x[i], stdout);
+		cotnum(x2, stdout);
 		mirkill(x2);
+		mirkill(x[i]);
 	}
 	mirkill(k);
 }

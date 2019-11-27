@@ -1,6 +1,7 @@
 #include "JSF.h"
 
-inline void subGenJSF(big Var1, big Var2, char &JSFi, bool &d, big RS)	//in use
+//use this
+inline void subGenJSF(big Var1, big Var2, char &JSFi, bool &d, big RS)
 {
 	DWORD v1 = Var1->w[0], v2 = Var2->w[0];
 	if (!(v1 & 1)) JSFi = 0;
@@ -13,6 +14,7 @@ inline void subGenJSF(big Var1, big Var2, char &JSFi, bool &d, big RS)	//in use
 	sftbit(RS, -1, RS);
 }
 
+//use this
 DWORD GenJSF(big R, big S, char *JSFr, char *JSFs)	
 {
 	big L1 = mirvar(1), L2 = mirvar(1),
@@ -113,6 +115,44 @@ void powmod_JSF(big *lst, big a, big b, big P, big Z)
 	}
 }
 
+void test_GenJSF(big P, csprng &Rng)
+{
+	const int d = 2;
+	big *x = new big[d];
+	big x2 = mirvar(0);
+	DWORD lendJSF;
+
+	char **dJSF = new char*[d];
+	for (int i = 0; i < d; i++) {
+		x[i] = mirvar(0);
+		dJSF[i] = new char[500];
+	}
+	big k = mirvar(0x1ED627);
+	strong_bigrand(&Rng, P, k);
+	//strong_bigdig(&Rng, 9, 16, k);
+	//char sk[10] = "F4C9F1076";
+	//cinstr(k, sk);
+	//cout << "k : "; cotnum(k, stdout);
+	ShamirDecomposit_nk(d, k, x);
+	lendJSF = GenJSF(x[0], x[1], dJSF[0], dJSF[1]);
+	cout << lendJSF << endl;
+	for (int i = 0; i < d; i++) {
+		x2 = mirvar(0);
+		cout << "JSF[" << i << "]: ";
+		for (int j = lendJSF; j > 0; j--) {
+			sftbit(x2, 1, x2);
+			incr(x2, dJSF[i][j], x2);
+			printf("%2d", dJSF[i][j]);
+		}
+		cout << endl;
+		cotnum(x[i], stdout);
+		cotnum(x2, stdout);
+		mirkill(x2);
+		mirkill(x[i]);
+	}
+	mirkill(k);
+}
+
 #define TESTJSF 100
 void testJSF(big P, csprng &Rng)
 {
@@ -159,5 +199,5 @@ void testJSF(big P, csprng &Rng)
 	printf("%d\n", count);
 	mirkill(X); mirkill(Y);
 	mirkill(k); mirkill(a); mirkill(b);
-	mirkill(Z); mirkill(Z1);
+	mirkill(Z); mirkill(Z1); mirkill(Z2);
 }

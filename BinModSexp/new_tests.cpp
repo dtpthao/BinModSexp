@@ -1,6 +1,6 @@
 #include "new_tests.h"
 
-#define TESTS 1000
+#define TESTS 2000
 #define REPEAT 10
 void compares(int len, big P, csprng &Rng, Result &res)
 {
@@ -43,27 +43,29 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			dur2 = getTickCount(&timer2);
 			min2 = (min2 < dur2) ? min2 : dur2;
 
-			// n = 3
+			// JSF3
 			startTimer(&timer3);
 			ShamirDecomposit3(k, g, r, y, P);
-			powmod3_Bin(r, y, P, R3);			// R3 = y1^r1 * y2^r2 * y3^r3
+			//powmod3_Bin(r, y, P, R3);			// R3 = y1^r1 * y2^r2 * y3^r3
+			powmod_dJSF(3, y, r, P, R3);
 			stopTimer(&timer3);
 			dur3 = getTickCount(&timer3);
 			min3 = (min3 < dur3) ? min3 : dur3;
 
-			// n = 4
+			// JSF4
 			startTimer(&timer4);
 			ShamirDecomposit_n(4, k, g, r, y, P);
-			powmodn_Bin(4, r, y, P, R4);		// R4 = y1^r1 * ...* y4^r4
+			//powmodn_Bin(4, r, y, P, R4);		// R4 = y1^r1 * ...* y4^r4
+			powmod_dJSF(4, y, r, P, R4);
 			stopTimer(&timer4);
 			dur4 = getTickCount(&timer4);
 			min4 = (min4 < dur4) ? min4 : dur4;
 
-			// n = 3
+			// JSF5
 			startTimer(&timer5);
-			ShamirDecomposit_n(3, k, g, r, y, P);
-			//powmod_dJSF(3, y, r, P, R5);
-			powmodn_Bin(3, r, y, P, R5);
+			ShamirDecomposit_n(5, k, g, r, y, P);
+			//powmodn_Bin(3, r, y, P, R5);
+			powmod_dJSF(5, y, r, P, R5);
 			stopTimer(&timer5);
 			dur5 = getTickCount(&timer5);
 			min5 = (min5 < dur5) ? min5 : dur5;

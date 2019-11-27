@@ -10,9 +10,12 @@ DWORD GenJSF(big R, big S, char *JSFr, char *JSFs);						//in use
 
 inline void prePowModJSF(big X, big X1, big Y, big Y1, big P, big *lst);	//in use
 void powmod2_JSF(big X, big X1, big a, big Y, big Y1, big b, big P, big Z);	//in use
-void powmod_ShrJSF(big X, big k, big P, big Z);
-void powmod_JSF(big *lst, big a, big b, big P, big Z);
+inline void prePowModJSF(big X, big Y, big P, big *lst); //new
+void powmod_JSF(big X, big a, big Y1, big b, big P, big Z); //new
+//void powmod_ShrJSF(big X, big k, big P, big Z);
+//void powmod_JSF(big *lst, big a, big b, big P, big Z);
 
+void test_GenJSF(big P, csprng &Rng);
 void testJSF(big P, csprng &Rng);
 
 /* d-JSF.cpp */
