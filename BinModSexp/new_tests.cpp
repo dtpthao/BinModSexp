@@ -65,11 +65,12 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			dur4 = getTickCount(&timer4);
 			min4 = (min4 < dur4) ? min4 : dur4;
 
-			// JSF5
+			// lib5
 			startTimer(&timer5);
 			ShamirDecomposit_n(5, k, g, r, y, P);
 			//powmodn_Bin(3, r, y, P, R5);
-			powmod_dJSF(5, y, r, P, R5);
+			//powmod_dJSF(5, y, r, P, R5);
+			powmodn(5, y, r, P, R5);
 			stopTimer(&timer5);
 			dur5 = getTickCount(&timer5);
 			min5 = (min5 < dur5) ? min5 : dur5;
