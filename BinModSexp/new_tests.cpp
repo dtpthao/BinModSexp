@@ -1,6 +1,6 @@
 #include "new_tests.h"
 
-#define TESTS 2000
+#define TESTS 5000
 #define REPEAT 10
 void compares(int len, big P, csprng &Rng, Result &res)
 {
@@ -38,7 +38,8 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			// n = 2
 			startTimer(&timer2);
 			ShamirDecomposit(k, a, b, X, Y, P);
-			powmod2_Bin(X, a, Y, b, P, R2);		// R2 = X^a * Y^b mod P
+			//powmod2_Bin(X, a, Y, b, P, R2);		// R2 = X^a * Y^b mod P
+			powmod_JSF(X, a, Y, b, P, R2);		// R2 = X^a * Y^b mod P
 			stopTimer(&timer2);
 			dur2 = getTickCount(&timer2);
 			min2 = (min2 < dur2) ? min2 : dur2;

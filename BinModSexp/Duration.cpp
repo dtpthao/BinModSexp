@@ -82,7 +82,7 @@ void durationJSF(big X, big k, big P, big &Z, double &t)
 		startTimer(&timer);
 		ShamirDecomposit(k, a, b, X, Y, P);
 		prePowModJSF(X, X1, Y, Y1, P, lst);
-		powmod_JSF(lst, a, b, P, Z);
+		//powmod_JSF(lst, a, b, P, Z);
 		stopTimer(&timer);
 		dur = getTickCount(&timer);
 		min = (min < dur) ? min : dur;

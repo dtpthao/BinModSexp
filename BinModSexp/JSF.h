@@ -16,6 +16,7 @@ void powmod_JSF(big X, big a, big Y1, big b, big P, big Z); //new
 //void powmod_JSF(big *lst, big a, big b, big P, big Z);
 
 void test_GenJSF(big P, csprng &Rng);
+void compare_GenJSFs(big P, csprng &Rng);
 void testJSF(big P, csprng &Rng);
 
 /* d-JSF.cpp */
