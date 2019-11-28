@@ -46,21 +46,17 @@ DWORD GendJSF(int d, big *r, int **dJSF)
 		for (i = 0; i < d; i++) {
 			sftbit(x[i], -1, x[i]);
 			if (dJSF[i][lenJSF] == -1) {
-				//cout << "x[" << i << "]: "; cotnum(x[i], stdout);
-				//incr(x[i], 1, x[i]);
 				if (x[i]->len == 0) x[i]->len = 1;
 				if (x[i]->w[0] ^ 0xffffffff) x[i]->w[0]++;
 				else incr(x[i], 1, x[i]);
-				//cout << "x[" << i << "]: "; cotnum(x[i], stdout);
-				//cout << endl;
 			}
 			loop |= !(x[i]->len == 1 && x[i]->w[0] == 0 || x[i]->len == 0);
 		}
 		lenJSF++;
 		a0 = a1;
 	}
-	for (i = 0; i < d; i++) mirkill(x[i]);
 
+	for (i = 0; i < d; i++) mirkill(x[i]);
 	return lenJSF;
 }
 
