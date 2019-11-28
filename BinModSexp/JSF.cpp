@@ -15,7 +15,7 @@ inline void subGenJSF(big Var1, big Var2, char &JSFi, bool &d, big RS)
 }
 
 //this is worse
-DWORD GenJSF2(big R, big S, char *JSFr, char *JSFs)	
+DWORD GenJSF(big R, big S, char *JSFr, char *JSFs)	
 {
 	big L1 = mirvar(1), L2 = mirvar(1),
 		R1 = mirvar(0), S1 = mirvar(0);
@@ -36,7 +36,7 @@ DWORD GenJSF2(big R, big S, char *JSFr, char *JSFs)
 }        
 
 // this one is better
-DWORD GenJSF(big R, big S, char *JSFr, char *JSFs)
+DWORD GenJSF2(big R, big S, char *JSFr, char *JSFs)
 {
 	big R1 = mirvar(0), S1 = mirvar(0);
 	DWORD lenJSF = 0;
@@ -286,21 +286,21 @@ void compare_GenJSFs(big P, csprng &Rng)
 {
 	const int d = 2;
 	big *x = new big[d];
-	DWORD lenJSF;
-	DWORD lenJSF2;
+	DWORD lenJSF, lenJSF2;
 	big k = mirvar(0x1ED627);
-	stopWatch timer1, timer2;
+	stopWatch timer1, timer2, timer3;
 	LONGLONG dur1, min1 = LONG_MAX,
-		dur2, min2 = LONG_MAX;
-	double t1 = 0, t2 = 0;
-	int count1 = 0, count2 = 0;
+		dur2, min2 = LONG_MAX,
+		dur3, min3 = LONG_MAX;
+	double t1 = 0, t2 = 0, t3 = 0;
+	int count1 = 0, count2 = 0, count3 = 0;
 
 	char **JSF = new char*[d];
 	char **JSF2 = new char*[d];
 	for (int i = 0; i < d; i++) {
 		x[i] = mirvar(0);
-		JSF[i] = new char[1000];
-		JSF2[i] = new char[1000];
+		JSF[i] = new char[800];
+		JSF2[i] = new char[800];
 	}
 	
 	for (int ii = 0; ii < 1000; ii++) {
@@ -309,7 +309,7 @@ void compare_GenJSFs(big P, csprng &Rng)
 
 		for (int j = 0; j < 10; j++) {
 			startTimer(&timer1);
-			lenJSF = GenJSF3(x[0], x[1], JSF[0], JSF[1]);
+			lenJSF = GenJSF(x[0], x[1], JSF[0], JSF[1]);
 			stopTimer(&timer1);
 			dur1 = getTickCount(&timer1);
 			min1 = (min1 < dur1) ? min1 : dur1;
@@ -319,9 +319,16 @@ void compare_GenJSFs(big P, csprng &Rng)
 			stopTimer(&timer2);
 			dur2 = getTickCount(&timer2);
 			min2 = (min2 < dur2) ? min2 : dur2;
+
+			startTimer(&timer3);
+			lenJSF2 = GenJSF3(x[0], x[1], JSF2[0], JSF2[1]);
+			stopTimer(&timer3);
+			dur3 = getTickCount(&timer3);
+			min3 = (min3 < dur3) ? min3 : dur3;
 		}
 		t1 += min1;
 		t2 += min2;		
+		t3 += min3;		
 
 		if (lenJSF != lenJSF2) cout << "Blinchik!" << endl;
 		for (int j = lenJSF; j > 0; j--) {
@@ -335,8 +342,10 @@ void compare_GenJSFs(big P, csprng &Rng)
 	}
 	t1 /= 1000;
 	t2 /= 1000;
-	cout << "time GenJSF3: " << t1 << endl;
+	t3 /= 1000;
+	cout << "time GenJSF : " << t1 << endl;
 	cout << "time GenJSF2: " << t2 << endl;
+	cout << "time GenJSF3: " << t3 << endl;
 
 	for (int i = 0; i < d; i++) {
 		mirkill(x[i]);
