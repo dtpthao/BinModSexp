@@ -22,7 +22,7 @@ void Test(csprng &Rng, big X, big P, Result &res)
 		res.c[0] += !compare(Z1, Z);
 
 		//duration2(X, k, P, Z2, powmod2_Bin, res.t[1]);
-		duration1(X, k, P, Z2, powmod_ShrBin, res.t[1]);
+		//duration1(X, k, P, Z2, powmod_ShrBin, res.t[1]);
 		res.c[1] += !compare(Z2, Z);
 
 		//duration2(X, k, P, Z1, powmod2_JSF, res.t[2]);

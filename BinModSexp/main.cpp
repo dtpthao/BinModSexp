@@ -37,7 +37,7 @@ int main()
 		//compare_GenJSFs(P, Rng);
 	}
 	//cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=4)\n";
-	cout << setw(19) << "" << "n=1          lib2          lib3          lib4          lib5          lib1\n";
+	cout << setw(19) << "" <<   "Bin1         Bin2          Bin3          Bin4          Bin5          lib1\n";
 	printcompares_bin(res, m);
 
 	//test_GenJSF(P, Rng);
