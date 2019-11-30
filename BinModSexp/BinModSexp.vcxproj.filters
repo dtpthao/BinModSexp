@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\bin">
+      <UniqueIdentifier>{6fd2edcb-836b-41e7-9da5-18754868c3c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\JSF">
+      <UniqueIdentifier>{18bcfcb4-623e-4dd0-bd56-1dd36a8cb064}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,20 +27,38 @@
     <ClCompile Include="Duration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShamirMul.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Field.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Bin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="JSF.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mrpower.c">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="old_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pow3bin.cpp">
+      <Filter>Source Files\bin</Filter>
+    </ClCompile>
+    <ClCompile Include="pow2bin.cpp">
+      <Filter>Source Files\bin</Filter>
+    </ClCompile>
+    <ClCompile Include="powbin.cpp">
+      <Filter>Source Files\bin</Filter>
+    </ClCompile>
+    <ClCompile Include="pownbin.cpp">
+      <Filter>Source Files\bin</Filter>
+    </ClCompile>
+    <ClCompile Include="new_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shr_decomp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JSF.cpp">
+      <Filter>Source Files\JSF</Filter>
+    </ClCompile>
+    <ClCompile Include="d-JSF.cpp">
+      <Filter>Source Files\JSF</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -49,9 +73,6 @@
     <ClInclude Include="Duration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShamirMul.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Field.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -59,6 +80,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JSF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="old_tests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="new_tests.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shr_decomp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
