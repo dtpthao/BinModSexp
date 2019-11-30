@@ -37,41 +37,6 @@ DWORD GenJSF(big R, big S, char *JSFr, char *JSFs)
 	return lenJSF;
 }
 
-//this is worse
-inline void subGenJSF(big Var1, big Var2, char &JSFi, bool &d, big RS)
-{
-	DWORD v1 = Var1->w[0], v2 = Var2->w[0];
-	if (!(v1 & 1)) JSFi = 0;
-	else {
-		JSFi = (v1 & 2) ? -1 : 1;
-		if ((!(v1 & 7 ^ 3) || !(v1 & 7 ^ 5)) && ((v2 & 3) == 2))
-			JSFi = -JSFi;
-	}
-	if (((int)d << 1) == (JSFi + 1)) d = 1 - d;
-	sftbit(RS, -1, RS);
-}
-
-//this is worse
-DWORD GenJSF2(big R, big S, char *JSFr, char *JSFs)
-{
-	big L1 = mirvar(1), L2 = mirvar(1),
-		R1 = mirvar(0), S1 = mirvar(0);
-	bool d1 = 0, d2 = 0;
-	DWORD lenJSF = 0;
-
-	copy(R, L1); copy(S, L2); copy(R, R1); copy(S, S1);
-	while (L1->len > 0 || L2->len > 0) {
-		lenJSF++;
-		subGenJSF(L1, L2, JSFr[lenJSF], d1, R1);
-		subGenJSF(L2, L1, JSFs[lenJSF], d2, S1);
-		incr(R1, d1, L1);
-		incr(S1, d2, L2);
-	}
-	mirkill(L1); mirkill(L2);
-	mirkill(R1); mirkill(S1);
-	return lenJSF;
-}
-
 //	0	1	2	3	4	5	 6	  7		8
 // {X*Y, X, X/Y, Y, 0, 1/Y, Y/X, 1/X, 1/XY}
 inline void prePowModJSF(big X, big Y, big P, big *lst)
@@ -113,6 +78,41 @@ void powmod_JSF(big X, big a, big Y, big b, big P, big Z)
 	}
 
 	for (int i = 0; i < 9; i++) mirkill(lst[i]);
+}
+
+//this is worse
+inline void subGenJSF(big Var1, big Var2, char &JSFi, bool &d, big RS)
+{
+	DWORD v1 = Var1->w[0], v2 = Var2->w[0];
+	if (!(v1 & 1)) JSFi = 0;
+	else {
+		JSFi = (v1 & 2) ? -1 : 1;
+		if ((!(v1 & 7 ^ 3) || !(v1 & 7 ^ 5)) && ((v2 & 3) == 2))
+			JSFi = -JSFi;
+	}
+	if (((int)d << 1) == (JSFi + 1)) d = 1 - d;
+	sftbit(RS, -1, RS);
+}
+
+//this is worse
+DWORD GenJSF2(big R, big S, char *JSFr, char *JSFs)
+{
+	big L1 = mirvar(1), L2 = mirvar(1),
+		R1 = mirvar(0), S1 = mirvar(0);
+	bool d1 = 0, d2 = 0;
+	DWORD lenJSF = 0;
+
+	copy(R, L1); copy(S, L2); copy(R, R1); copy(S, S1);
+	while (L1->len > 0 || L2->len > 0) {
+		lenJSF++;
+		subGenJSF(L1, L2, JSFr[lenJSF], d1, R1);
+		subGenJSF(L2, L1, JSFs[lenJSF], d2, S1);
+		incr(R1, d1, L1);
+		incr(S1, d2, L2);
+	}
+	mirkill(L1); mirkill(L2);
+	mirkill(R1); mirkill(S1);
+	return lenJSF;
 }
 
 // why did I do this???

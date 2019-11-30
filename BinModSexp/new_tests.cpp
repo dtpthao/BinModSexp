@@ -49,8 +49,6 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			//powmod3_Bin(r, y, P, R3);			// R3 = y1^r1 * y2^r2 * y3^r3
 			//powmod_dJSF(3, y, r, P, R3);
 			//powmodn(3, y, r, P, R3);
-			ShamirDecomposit(k, a, b, X, Y, P);
-			powmod_JSF2(X, a, Y, b, P, R3);
 			stopTimer(&timer3);
 			dur3 = getTickCount(&timer3);
 			min3 = (min3 < dur3) ? min3 : dur3;

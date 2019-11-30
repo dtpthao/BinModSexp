@@ -33,14 +33,14 @@ int main()
 		//test3Bin_2(P, Rng);
 		//testnBin(P, Rng);
 		//test_powmoddJSF(P, Rng);
-		//compares(m[i], P, Rng, res[i]);
-		compare_GenJSFs(P, Rng);
+		compares(m[i], P, Rng, res[i]);
+		//compare_GenJSFs(P, Rng);
 		//test_HammingWeight_dJSF(P, Rng);
-		cout << endl;
+		//cout << endl;
 	}
 	//cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=4)\n";
-	//cout << setw(19) << "" <<   "Bin1        JSF21         JSF22          JSF4          JSF5          lib1\n";
-	//printcompares_bin(res, m);
+	cout << setw(19) << "" <<   "Bin1        JSF21         JSF22          JSF4          JSF5          lib1\n";
+	printcompares_bin(res, m);
 
 	//test_GenJSF(P, Rng);
 	//test_GendJSF(P, Rng);
