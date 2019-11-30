@@ -2,7 +2,7 @@
 
 // Generate d-dimensional Simple JSF Form
 // d < 32
-DWORD GendJSF(int d, big *r, int **dJSF)
+DWORD GendJSF(int d, big *r, char **dJSF)
 {
 	int i, j, a0, a1, tmp;
 	int A[2];
@@ -63,7 +63,6 @@ DWORD GendJSF(int d, big *r, int **dJSF)
 void prePowMod_dJSF(int d, int len, big *y, big P, big *plist)
 {
 	int i, j, k, i0 = len >> 1, upi, downi;
-	int *idxs = new int[d];
 
 	for (i = 0, j = 1; i < d; i++, j *= 3) {
 		upi = i0 + j;
@@ -86,8 +85,8 @@ void prePowMod_dJSF(int d, int len, big *y, big P, big *plist)
 void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 {
 	int tmp = 1, I0, idx = 0, i, j;
-	int **dJSF = new int*[d]; 
-	for (i = 0; i < d; i++) dJSF[i] = new int[700];
+	char **dJSF = new char*[d]; 
+	for (i = 0; i < d; i++) dJSF[i] = new char[1000];
 	DWORD lendJSF;
 	for (i = 0; i < d; i++) tmp *= 3;
 	big *plist = new big[tmp];
@@ -118,10 +117,10 @@ void test_GendJSF(big P, csprng &Rng)
 	big x2 = mirvar(0);
 	DWORD lendJSF;
 
-	int **dJSF = new int*[d];
+	char **dJSF = new char*[d];
 	for (int i = 0; i < d; i++) {
 		x[i] = mirvar(0);
-		dJSF[i] = new int[200];
+		dJSF[i] = new char[200];
 	}
 	big k = mirvar(0x1ED627);
 	strong_bigrand(&Rng, P, k);
@@ -157,11 +156,11 @@ void test_powmoddJSF(big P, csprng &Rng)
 	big k = mirvar(0), g = mirvar(0);
 	big Z = mirvar(0), Z1 = mirvar(0), Z2 = mirvar(0);
 	DWORD lendJSF;
-	int **dJSF = new int*[d];
+	char **dJSF = new char*[d];
 	for (int i = 0; i < d; i++) {
 		r[i] = mirvar(0);
 		y[i] = mirvar(0);
-		dJSF[i] = new int[300];
+		dJSF[i] = new char[300];
 	}
 
 	strong_bigrand(&Rng, P, g);

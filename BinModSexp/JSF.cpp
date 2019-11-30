@@ -37,6 +37,41 @@ DWORD GenJSF(big R, big S, char *JSFr, char *JSFs)
 	return lenJSF;
 }
 
+//this is worse
+inline void subGenJSF(big Var1, big Var2, char &JSFi, bool &d, big RS)
+{
+	DWORD v1 = Var1->w[0], v2 = Var2->w[0];
+	if (!(v1 & 1)) JSFi = 0;
+	else {
+		JSFi = (v1 & 2) ? -1 : 1;
+		if ((!(v1 & 7 ^ 3) || !(v1 & 7 ^ 5)) && ((v2 & 3) == 2))
+			JSFi = -JSFi;
+	}
+	if (((int)d << 1) == (JSFi + 1)) d = 1 - d;
+	sftbit(RS, -1, RS);
+}
+
+//this is worse
+DWORD GenJSF2(big R, big S, char *JSFr, char *JSFs)
+{
+	big L1 = mirvar(1), L2 = mirvar(1),
+		R1 = mirvar(0), S1 = mirvar(0);
+	bool d1 = 0, d2 = 0;
+	DWORD lenJSF = 0;
+
+	copy(R, L1); copy(S, L2); copy(R, R1); copy(S, S1);
+	while (L1->len > 0 || L2->len > 0) {
+		lenJSF++;
+		subGenJSF(L1, L2, JSFr[lenJSF], d1, R1);
+		subGenJSF(L2, L1, JSFs[lenJSF], d2, S1);
+		incr(R1, d1, L1);
+		incr(S1, d2, L2);
+	}
+	mirkill(L1); mirkill(L2);
+	mirkill(R1); mirkill(S1);
+	return lenJSF;
+}
+
 //	0	1	2	3	4	5	 6	  7		8
 // {X*Y, X, X/Y, Y, 0, 1/Y, Y/X, 1/X, 1/XY}
 inline void prePowModJSF(big X, big Y, big P, big *lst)
@@ -162,6 +197,82 @@ void powmod_JSF(big *lst, big a, big b, big P, big Z)
 		if (index != 4)
 			mulmod(Z, lst[index], P, Z);
 	}
+}
+
+void compare_GenJSFs(big P, csprng &Rng)
+{
+	big *x = new big[2];
+	DWORD lenJSF, lenJSF2, sum1, sum2;
+	big k = mirvar(0x1ED627);
+	stopWatch timer1, timer2, timer3;
+	LONGLONG dur1, min1 = LONG_MAX,
+		dur2, min2 = LONG_MAX,
+		dur3, min3 = LONG_MAX;
+	double t1 = 0, t2 = 0, w1 = 0, w2 = 0;
+	int count1 = 0, count2 = 0;
+
+	char **JSF = new char*[2];
+	char **JSF2 = new char*[2];
+	x[0] = mirvar(0);
+	x[1] = mirvar(0);
+	JSF[0] = new char[800];
+	JSF[1] = new char[800];
+	JSF2[0] = new char[800];
+	JSF2[1] = new char[800];
+	sum1 = sum2 = 0;
+	const int TIMES = 5000;
+	for (int i = 0; i < TIMES; i++) {
+		strong_bigrand(&Rng, P, k);
+		ShamirDecomposit_nk(2, k, x);
+		count1 = 0; count2 = 0;
+		for (int j = 0; j < 10; j++) {
+			startTimer(&timer1);
+			lenJSF = GenJSF(x[0], x[1], JSF[0], JSF[1]);
+			stopTimer(&timer1);
+			dur1 = getTickCount(&timer1);
+			min1 = (min1 < dur1) ? min1 : dur1;
+
+			startTimer(&timer2);
+			lenJSF2 = GendJSF(2, x, JSF2);
+			stopTimer(&timer2);
+			dur2 = getTickCount(&timer2);
+			min2 = (min2 < dur2) ? min2 : dur2;
+		}
+		t1 += min1;
+		t2 += min2;
+
+		//if (lenJSF != lenJSF2) cout << "Blinchik!" << endl;
+		for (int j = lenJSF; j > 0; j--) {
+			if (!(JSF[0][j] | JSF[1][j])) count1++;
+		}
+		for (int j = lenJSF2 - 1; j >= 0; j--) {
+			if (!(JSF2[0][j] | JSF2[1][j])) count2++;
+		}
+		w1 += (double)count1 / lenJSF;
+		w2 += (double)count2 / lenJSF2;
+		//if (count1 != count2) {
+		//	cout << "Damnnnn!" << endl;
+		//	break;
+		//}
+	}
+	t1 /= TIMES;
+	t2 /= TIMES;
+	w1 /= TIMES;
+	w2 /= TIMES;
+	cout << "Average testing results of " << TIMES << " pairs of numbers:" << endl;
+	std::cout << "weight GenJSF : " << (1 - w1) << endl;
+	std::cout << "weight GendJSF: " << (1 - w2) << endl;
+	std::cout << "runtime GenJSF   : " << t1 << endl;
+	std::cout << "runtime GendJSF  : " << t2 << endl;
+
+	mirkill(x[0]);
+	mirkill(x[1]);
+	delete[] JSF[0];
+	delete[] JSF[1];
+	delete[] JSF2[0];
+	delete[] JSF2[1];
+	delete[] JSF; delete[] JSF2;
+	mirkill(k);
 }
 
 #define TESTJSF 100

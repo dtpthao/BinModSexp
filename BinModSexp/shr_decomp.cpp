@@ -101,7 +101,6 @@ void ShamirDecomposit_nk(int n, big k, big *r)
 	if (k->len == 0) return;
 	DWORD l, i = 31;
 	big sft = mirvar(1);
-	for (int ii = 0; ii < n; ii++) r[i] = mirvar(1);
 
 	while (!(k->w[k->len - 1] & (1 << i))) i--;
 	l = ((k->len << 5) - (31 - i)) / n;  //bit lenght of "k"/n
