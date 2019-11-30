@@ -115,29 +115,6 @@ void powmod_JSF(big X, big a, big Y, big b, big P, big Z)
 	for (int i = 0; i < 9; i++) mirkill(lst[i]);
 }
 
-void powmod_JSF2(big X, big a, big Y, big b, big P, big Z)
-{
-	char JSFa[1000] = { 0 };
-	char JSFb[1000] = { 0 };
-	DWORD lenJSF;
-	int index;
-	big lst[9];
-	for (int i = 0; i < 9; i++) lst[i] = mirvar(1);
-	prePowModJSF(X, Y, P, lst);
-	lenJSF = GenJSF2(a, b, JSFa, JSFb);
-
-	index = 4 - 3 * JSFa[lenJSF] - JSFb[lenJSF];
-	copy(lst[index], Z);
-	for (int i = lenJSF - 1; i > 0; i--) {
-		index = 4 - 3 * JSFa[i] - JSFb[i];
-		mulmod(Z, Z, P, Z);
-		if (index != 4)
-			mulmod(Z, lst[index], P, Z);
-	}
-
-	for (int i = 0; i < 9; i++) mirkill(lst[i]);
-}
-
 // why did I do this???
 //	0	1	2	3	4	5	 6	  7		8
 // {X*Y, X, X/Y, Y, 0, 1/Y, Y/X, 1/X, 1/XY}
@@ -256,7 +233,8 @@ void compare_GenJSFs(big P, csprng &Rng)
 			min1 = (min1 < dur1) ? min1 : dur1;
 
 			startTimer(&timer2);
-			lenJSF2 = GendJSF(2, x, JSF2);
+			//lenJSF2 = GendJSF(2, x, JSF2);
+			lenJSF2 = GenJSF2(x[0], x[1], JSF2[0], JSF2[1]);
 			stopTimer(&timer2);
 			dur2 = getTickCount(&timer2);
 			min2 = (min2 < dur2) ? min2 : dur2;
@@ -284,9 +262,9 @@ void compare_GenJSFs(big P, csprng &Rng)
 	w2 /= TIMES;
 	cout << "Average testing results of " << TIMES << " pairs of numbers:" << endl;
 	std::cout << "weight GenJSF : " << (1 - w1) << endl;
-	std::cout << "weight GendJSF: " << (1 - w2) << endl;
-	std::cout << "runtime GenJSF   : " << t1 << endl;
-	std::cout << "runtime GendJSF  : " << t2 << endl;
+	std::cout << "weight GenJSF2: " << (1 - w2) << endl;
+	std::cout << "runtime GenJSF : " << t1 << endl;
+	std::cout << "runtime GenJSF2: " << t2 << endl;
 
 	mirkill(x[0]);
 	mirkill(x[1]);
