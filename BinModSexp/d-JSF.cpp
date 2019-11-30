@@ -168,7 +168,7 @@ void test_HammingWeight_dJSF(big P, csprng &Rng)
 	int count = 0;
 	bool b = 0;
 	double weight = 0;
-	const int TIMES = 5000;
+	const int TIMES = 20000;
 	printf(" d | Testing times | Average hamming weight\n");
 	for (int d = 1; d < 6; d++) {
 		weight = 0;
@@ -187,7 +187,7 @@ void test_HammingWeight_dJSF(big P, csprng &Rng)
 			weight += (double)count / lendJSF;
 		}
 		weight /= TIMES;
-		printf(" %d |     %d      |      %f\n", d, TIMES, (1 - weight));
+		printf(" %d |     %5d     |      %f\n", d, TIMES, (1 - weight));
 	}
 
 	for (int i = 0; i < 6; i++) {
