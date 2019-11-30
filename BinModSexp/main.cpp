@@ -34,7 +34,8 @@ int main()
 		//testnBin(P, Rng);
 		//test_powmoddJSF(P, Rng);
 		//compares(m[i], P, Rng, res[i]);
-		compare_GenJSFs(P, Rng);
+		//compare_GenJSFs(P, Rng);
+		test_HammingWeight_dJSF(P, Rng);
 		cout << endl;
 	}
 	//cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=4)\n";

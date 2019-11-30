@@ -22,7 +22,8 @@ void testJSF(big P, csprng &Rng);
 /* d-JSF.cpp */
 DWORD GendJSF(int d, big *r, char **dJSF);
 void powmod_dJSF(int d, big *y, big *r, big P, big &R);
-void test_GendJSF(big P, csprng &Rng);
+void test_correctness_GendJSF(big P, csprng &Rng);
+void test_HammingWeight_dJSF(big P, csprng &Rng);
 void test_powmoddJSF(big P, csprng &Rng);
 
 #endif // !_JSF_H

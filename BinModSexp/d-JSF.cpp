@@ -110,7 +110,7 @@ void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 	for (i = 0; i < tmp; i++) mirkill(plist[i]);
 }
 
-void test_GendJSF(big P, csprng &Rng)
+void test_correctness_GendJSF(big P, csprng &Rng)
 {
 	const int d = 3;
 	big *x = new big[d];
@@ -123,6 +123,7 @@ void test_GendJSF(big P, csprng &Rng)
 		dJSF[i] = new char[200];
 	}
 	big k = mirvar(0x1ED627);
+
 	strong_bigrand(&Rng, P, k);
 	//strong_bigdig(&Rng, 9, 16, k);
 	//char sk[10] = "F4C9F1076";
@@ -131,8 +132,9 @@ void test_GendJSF(big P, csprng &Rng)
 	ShamirDecomposit_nk(d, k, x);
 	lendJSF = GendJSF(d, x, dJSF);
 	cout << lendJSF << endl;
+	
 	for (int i = 0; i < d; i++) {
-		x2 = mirvar(0);
+		x2->len = 1; x2->w[0] = 0;
 		cout << "JSF[" << i << "]: ";
 		for (int j = lendJSF - 1; j >= 0; j--) {
 			sftbit(x2, 1, x2);
@@ -142,9 +144,57 @@ void test_GendJSF(big P, csprng &Rng)
 		cout << endl;
 		cotnum(x[i], stdout);
 		cotnum(x2, stdout);
-		mirkill(x2);
-		mirkill(x[i]);
 	}
+	
+
+	for (int i = 0; i < d; i++) {
+		mirkill(x[i]);
+		delete[] dJSF[i];
+	}
+	delete[] dJSF;
+	mirkill(x2); mirkill(k);
+}
+
+void test_HammingWeight_dJSF(big P, csprng &Rng)
+{
+	big *x = new big[6];
+		char **dJSF = new char*[6];
+	for (int i = 0; i < 6; i++) {
+		x[i] = mirvar(0);
+		dJSF[i] = new char[1600];
+	}
+	big k = mirvar(0);
+	DWORD lendJSF;
+	int count = 0;
+	bool b = 0;
+	double weight = 0;
+	const int TIMES = 5000;
+	printf(" d | Testing times | Average hamming weight\n");
+	for (int d = 1; d < 6; d++) {
+		weight = 0;
+		for (int i = 0; i < TIMES; i++) {
+			strong_bigrand(&Rng, P, k);
+			ShamirDecomposit_nk(d, k, x);
+			lendJSF = GendJSF(d, x, dJSF);
+			count = 0;
+			for (int j = lendJSF - 1; j >= 0; j--) {
+				b = 0;
+				for (int ii = 0; ii < d; ii++) {
+					b |= dJSF[ii][j];
+				}
+				if (!b) count++;
+			}
+			weight += (double)count / lendJSF;
+		}
+		weight /= TIMES;
+		printf(" %d |     %d      |      %f\n", d, TIMES, (1 - weight));
+	}
+
+	for (int i = 0; i < 6; i++) {
+		mirkill(x[i]);
+		delete[] dJSF[i];
+	}
+	delete[] dJSF;
 	mirkill(k);
 }
 
