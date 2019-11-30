@@ -1,6 +1,6 @@
 #include "new_tests.h"
 
-#define TESTS 50
+#define TESTS 5000
 #define REPEAT 10
 void compares(int len, big P, csprng &Rng, Result &res)
 {
@@ -21,11 +21,9 @@ void compares(int len, big P, csprng &Rng, Result &res)
 	y[0] = mirvar(0); y[1] = mirvar(0); y[2] = mirvar(0); y[3] = mirvar(0); y[4] = mirvar(0);
 
 	strong_bigrand(&Rng, P, g);
-	//ShamirDecomposit_ng(len, 3, g, y, P);
 	copy(g, X);
 	for (int i = 0; i < TESTS; i++) {
 		strong_bigrand(&Rng, P, k);
-		//ShamirDecomposit_nk(3, k, r);
 
 		for (int j = 0; j < REPEAT; j++) {
 			// bin1
@@ -35,40 +33,42 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			dur1 = getTickCount(&timer1);
 			min1 = (min1 < dur1) ? min1 : dur1;
 
-			// bin2
+			// JSF2
 			startTimer(&timer2);
 			ShamirDecomposit(k, a, b, X, Y, P);
-			powmod2_Bin(X, a, Y, b, P, R2);		// R2 = X^a * Y^b mod P
-			//powmod_JSF(X, a, Y, b, P, R2);		// R2 = X^a * Y^b mod P
+			//powmod2_Bin(X, a, Y, b, P, R2);		// R2 = X^a * Y^b mod P
+			powmod_JSF(X, a, Y, b, P, R2);		// R2 = X^a * Y^b mod P
 			//powmod2(X, a, Y, b, P, R2);
 			stopTimer(&timer2);
 			dur2 = getTickCount(&timer2);
 			min2 = (min2 < dur2) ? min2 : dur2;
 
-			// bin3
+			// JSF3
 			startTimer(&timer3);
-			ShamirDecomposit3(k, g, r, y, P);
-			powmod3_Bin(r, y, P, R3);			// R3 = y1^r1 * y2^r2 * y3^r3
+			//ShamirDecomposit3(k, g, r, y, P);
+			//powmod3_Bin(r, y, P, R3);			// R3 = y1^r1 * y2^r2 * y3^r3
 			//powmod_dJSF(3, y, r, P, R3);
 			//powmodn(3, y, r, P, R3);
+			ShamirDecomposit(k, a, b, X, Y, P);
+			powmod_JSF2(X, a, Y, b, P, R3);
 			stopTimer(&timer3);
 			dur3 = getTickCount(&timer3);
 			min3 = (min3 < dur3) ? min3 : dur3;
 
-			// bin4
+			// JSF4
 			startTimer(&timer4);
-			ShamirDecomposit_n(4, k, g, r, y, P);
-			powmodn_Bin(4, r, y, P, R4);		// R4 = y1^r1 * ...* y4^r4
+			//ShamirDecomposit_n(4, k, g, r, y, P);
+			//powmodn_Bin(4, r, y, P, R4);		// R4 = y1^r1 * ...* y4^r4
 			//powmod_dJSF(4, y, r, P, R4);
 			//powmodn(4, y, r, P, R4);
 			stopTimer(&timer4);
 			dur4 = getTickCount(&timer4);
 			min4 = (min4 < dur4) ? min4 : dur4;
 
-			// bin5
+			// JSF5
 			startTimer(&timer5);
-			ShamirDecomposit_n(5, k, g, r, y, P);
-			powmodn_Bin(5, r, y, P, R5);
+			//ShamirDecomposit_n(5, k, g, r, y, P);
+			//powmodn_Bin(5, r, y, P, R5);
 			//powmod_dJSF(5, y, r, P, R5);
 			//powmodn(5, y, r, P, R5);
 			stopTimer(&timer5);
