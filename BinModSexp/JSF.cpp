@@ -80,7 +80,25 @@ void powmod_JSF(big X, big a, big Y, big b, big P, big Z)
 	for (int i = 0; i < 9; i++) mirkill(lst[i]);
 }
 
-//this is worse
+void powmod_JSF_gl(big X, big a, big Y, big b, big P, big Z)
+{
+	char JSFa[1000] = { 0 };
+	char JSFb[1000] = { 0 };
+	DWORD lenJSF;
+	int index;
+	prePowModJSF(X, Y, P, gl_bigs);
+	lenJSF = GenJSF(a, b, JSFa, JSFb);
+
+	index = 4 - 3 * JSFa[lenJSF] - JSFb[lenJSF];
+	copy(gl_bigs[index], Z);
+	for (int i = lenJSF - 1; i > 0; i--) {
+		index = 4 - 3 * JSFa[i] - JSFb[i];
+		mulmod(Z, Z, P, Z);
+		if (index != 4) mulmod(Z, gl_bigs[index], P, Z);
+	}
+}
+
+/*========== this version of GenJSF is worse approximately 2 times than the above one ===========*/
 inline void subGenJSF(big Var1, big Var2, char &JSFi, bool &d, big RS)
 {
 	DWORD v1 = Var1->w[0], v2 = Var2->w[0];
@@ -94,7 +112,6 @@ inline void subGenJSF(big Var1, big Var2, char &JSFi, bool &d, big RS)
 	sftbit(RS, -1, RS);
 }
 
-//this is worse
 DWORD GenJSF2(big R, big S, char *JSFr, char *JSFs)
 {
 	big L1 = mirvar(1), L2 = mirvar(1),
@@ -114,7 +131,9 @@ DWORD GenJSF2(big R, big S, char *JSFr, char *JSFs)
 	mirkill(R1); mirkill(S1);
 	return lenJSF;
 }
+/*===============================================================================================*/
 
+/*===================================== OLD powmods =============================================*/
 // why did I do this???
 //	0	1	2	3	4	5	 6	  7		8
 // {X*Y, X, X/Y, Y, 0, 1/Y, Y/X, 1/X, 1/XY}
@@ -198,7 +217,9 @@ void powmod_JSF(big *lst, big a, big b, big P, big Z)
 			mulmod(Z, lst[index], P, Z);
 	}
 }
+/*===============================================================================================*/
 
+/*===================================== TESTING STUFF ===========================================*/
 void compare_GenJSFs(big P, csprng &Rng)
 {
 	big *x = new big[2];
@@ -276,7 +297,7 @@ void compare_GenJSFs(big P, csprng &Rng)
 	mirkill(k);
 }
 
-#define TESTJSF 100
+#define TESTJSF 5000
 void testJSF(big P, csprng &Rng)
 {
 	big X = mirvar(0), Y = mirvar(0), k = mirvar(0);
@@ -324,3 +345,74 @@ void testJSF(big P, csprng &Rng)
 	mirkill(k); mirkill(a); mirkill(b);
 	mirkill(Z); mirkill(Z1); mirkill(Z2);
 }
+
+#define REPEAT2 10
+void compare_JSFs(big P, csprng &Rng, Result &res)
+{
+	stopWatch timer1, timer2, timer3, timer4;
+	LONGLONG dur1, min1 = LONG_MAX,
+		dur2, min2 = LONG_MAX,
+		dur3, min3 = LONG_MAX,
+		dur4, min4 = LONG_MAX;
+	big a = mirvar(1), b = mirvar(1),
+		X = mirvar(1), Y = mirvar(1);
+	big	g = mirvar(1), k = mirvar(1),
+		R = mirvar(1), R1 = mirvar(1),
+		R2 = mirvar(1), R3 = mirvar(1);
+
+	strong_bigrand(&Rng, P, g);
+	//ShamirDecomposit_ng(len, 2, g, y, P);
+	copy(g, X);
+	//copy(y[1], Y);
+
+	int count1 = 0, count2 = 0;
+	for (int i = 0; i < TESTJSF; i++) {
+		strong_bigrand(&Rng, P, k);
+		ShamirDecomposit(k, a, b, X, Y, P);
+
+		for (int i = 0; i < REPEAT2; i++) {
+			startTimer(&timer1);
+			powmod2_Bin(X, a, Y, b, P, R1);    
+			stopTimer(&timer1);
+			dur1 = getTickCount(&timer1);
+			min1 = (min1 < dur1) ? min1 : dur1;
+
+			startTimer(&timer2);
+			powmod_JSF(X, a, Y, b, P, R2);    // R2 = X^a * Y^b mod P
+			stopTimer(&timer2);
+			dur2 = getTickCount(&timer2);
+			min2 = (min2 < dur2) ? min2 : dur2;
+
+			startTimer(&timer3);
+			powmod_JSF_gl(X, a, Y, b, P, R3);
+			stopTimer(&timer3);
+			dur3 = getTickCount(&timer3);
+			min3 = (min3 < dur3) ? min3 : dur3;
+
+			startTimer(&timer4);
+			powmod2(X, a, Y, b, P, R);         // R = X^a * Y^b mod P
+			stopTimer(&timer4);
+			dur4 = getTickCount(&timer4);
+			min4 = (min4 < dur4) ? min4 : dur4;
+		}
+		res.c[0] += !compare(R, R1);
+		res.c[1] += !compare(R, R2);
+		res.c[2] += !compare(R, R3);
+		res.t[0] += min1;
+		res.t[1] += min2;
+		res.t[2] += min3;
+		res.t[3] += min4;
+	}
+	res.t[0] /= TESTJSF;
+	res.t[1] /= TESTJSF;
+	res.t[2] /= TESTJSF;
+	res.t[3] /= TESTJSF;
+	res.p[1] = (res.t[1] / res.t[0]) * 100;
+	res.p[2] = (res.t[2] / res.t[0]) * 100;
+	res.p[3] = (res.t[3] / res.t[0]) * 100;
+
+	mirkill(a); mirkill(b); mirkill(X); mirkill(Y);
+	mirkill(g); mirkill(k);
+	mirkill(R1); mirkill(R2); mirkill(R3); mirkill(R);
+}
+/*===============================================================================================*/
