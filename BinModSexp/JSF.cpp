@@ -63,29 +63,6 @@ void powmod_JSF(big X, big a, big Y, big b, big P, big Z)
 	char JSFb[1000] = { 0 };
 	DWORD lenJSF;
 	int index;
-	big lst[9];
-	for (int i = 0; i < 9; i++) lst[i] = mirvar(1);
-	prePowModJSF(X, Y, P, lst);
-	lenJSF = GenJSF(a, b, JSFa, JSFb);
-
-	index = 4 - 3 * JSFa[lenJSF] - JSFb[lenJSF];
-	copy(lst[index], Z);
-	for (int i = lenJSF - 1; i > 0; i--) {
-		index = 4 - 3 * JSFa[i] - JSFb[i];
-		mulmod(Z, Z, P, Z);
-		if (index != 4)
-			mulmod(Z, lst[index], P, Z);
-	}
-
-	for (int i = 0; i < 9; i++) mirkill(lst[i]);
-}
-
-void powmod_JSF_gl(big X, big a, big Y, big b, big P, big Z)
-{
-	char JSFa[1000] = { 0 };
-	char JSFb[1000] = { 0 };
-	DWORD lenJSF;
-	int index;
 	prePowModJSF(X, Y, P, gl_bigs);
 	lenJSF = GenJSF(a, b, JSFa, JSFb);
 
@@ -384,7 +361,7 @@ void compare_JSFs(big P, csprng &Rng, Result &res)
 			min2 = (min2 < dur2) ? min2 : dur2;
 
 			startTimer(&timer3);
-			powmod_JSF_gl(X, a, Y, b, P, R3);
+			//powmod_JSF_gl(X, a, Y, b, P, R3);
 			stopTimer(&timer3);
 			dur3 = getTickCount(&timer3);
 			min3 = (min3 < dur3) ? min3 : dur3;

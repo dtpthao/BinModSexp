@@ -7,8 +7,8 @@
 
 DWORD GenJSF(big R, big S, char *JSFr, char *JSFs);
 
-inline void prePowModJSF(big X, big Y, big P, big *lst); //new
-void powmod_JSF(big X, big a, big Y, big b, big P, big Z); //new
+inline void prePowModJSF(big X, big Y, big P, big *lst);
+void powmod_JSF(big X, big a, big Y, big b, big P, big Z);
 
 /*______________________don't use these functions____________________________*/
 inline void subGenJSF(big Var1, big Var2, char &JSFi, bool &d, big RS);
