@@ -14,6 +14,8 @@ using namespace std;
 #define NUM_OF_P	5
 #define LIB			2
 
+extern big gl_bigs[100];
+
 struct CONSTANTS_F2m {
 	DWORD m, k3, k2, k1;
 };

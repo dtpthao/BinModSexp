@@ -1,5 +1,7 @@
 ﻿#include "Field.h"
 
+big gl_bigs[100];
+
 void InitStrongRNG(csprng *Rng)
 {
 	srand(time(NULL));

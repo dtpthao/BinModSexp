@@ -13,7 +13,8 @@ void nrespowmod_Bin(big X, big k, big P, big &Z);
 void powmod2_Bin(big X, big a, big Y, big b, big P, big &Z);
 void testBin(big P, csprng &Rng);
 void test2Bin(big P, csprng &Rng);
-void compare_2_n(int len, big P, csprng &Rng, Result &res);
+void compare_bins(int len, big P, csprng &Rng, Result &res);
+void printBinOption2(Result res[NUM_OF_P + 1], int *m);
 
 // pow3bin.cpp
 void powmod3_Bin(big r1, big r2, big r3, big y1, big y2, big y3, big P, big &R);
