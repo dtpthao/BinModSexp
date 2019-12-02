@@ -7,23 +7,21 @@ DWORD GendJSF(int d, big *r, char **dJSF)
 	int i, j, a0, a1, tmp;
 	int A[2];
 	DWORD lenJSF;
-	big *x = new big[d];
 
 	i = j = lenJSF = a0 = A[0] = 0;
 	bool loop = false;
 	for (; i < d; i++) {
-		x[i] = mirvar(0);
-		copy(r[i], x[i]);
-		if (x[i]->w[0] & 1) A[a0] += 1 << i;
-		loop |= !(x[i]->len == 1 && x[i]->w[0] == 0 || x[i]->len == 0);
+		copy(r[i], gl_bigs[i]);
+		if (gl_bigs[i]->w[0] & 1) A[a0] += 1 << i;
+		loop |= !(gl_bigs[i]->len == 1 && gl_bigs[i]->w[0] == 0 || gl_bigs[i]->len == 0);
 	}
 
 	while (loop) {
 		a1 = a0 ^ 1;
 		A[a1] = 0;
 		for (i = 0; i < d; i++) {
-			dJSF[i][lenJSF] = x[i]->w[0] & 1;
-			if (x[i]->w[0] & 2) A[a1] += 1 << i;
+			dJSF[i][lenJSF] = gl_bigs[i]->w[0] & 1;
+			if (gl_bigs[i]->w[0] & 2) A[a1] += 1 << i;
 		}
 
 		/* check if A[a1] is a subset of A[a0] */
@@ -44,19 +42,18 @@ DWORD GendJSF(int d, big *r, char **dJSF)
 
 		loop = false;
 		for (i = 0; i < d; i++) {
-			sftbit(x[i], -1, x[i]);
+			sftbit(gl_bigs[i], -1, gl_bigs[i]);
 			if (dJSF[i][lenJSF] == -1) {
-				if (x[i]->len == 0) x[i]->len = 1;
-				if (x[i]->w[0] ^ 0xffffffff) x[i]->w[0]++;
-				else incr(x[i], 1, x[i]);
+				if (gl_bigs[i]->len == 0) gl_bigs[i]->len = 1;
+				if (gl_bigs[i]->w[0] ^ 0xffffffff) gl_bigs[i]->w[0]++;
+				else incr(gl_bigs[i], 1, gl_bigs[i]);
 			}
-			loop |= !(x[i]->len == 1 && x[i]->w[0] == 0 || x[i]->len == 0);
+			loop |= !(gl_bigs[i]->len == 1 && gl_bigs[i]->w[0] == 0 || gl_bigs[i]->len == 0);
 		}
 		lenJSF++;
 		a0 = a1;
 	}
 
-	for (i = 0; i < d; i++) mirkill(x[i]);
 	return lenJSF;
 }
 
@@ -134,7 +131,7 @@ void test_correctness_GendJSF(big P, csprng &Rng)
 	cout << lendJSF << endl;
 	
 	for (int i = 0; i < d; i++) {
-		x2->len = 1; x2->w[0] = 0;
+		x2 = mirvar(0);
 		cout << "JSF[" << i << "]: ";
 		for (int j = lendJSF - 1; j >= 0; j--) {
 			sftbit(x2, 1, x2);
@@ -144,6 +141,7 @@ void test_correctness_GendJSF(big P, csprng &Rng)
 		cout << endl;
 		cotnum(x[i], stdout);
 		cotnum(x2, stdout);
+		mirkill(x2);
 	}
 	
 
@@ -152,7 +150,7 @@ void test_correctness_GendJSF(big P, csprng &Rng)
 		delete[] dJSF[i];
 	}
 	delete[] dJSF;
-	mirkill(x2); mirkill(k);
+	mirkill(k);
 }
 
 void test_HammingWeight_dJSF(big P, csprng &Rng)
