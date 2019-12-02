@@ -8,6 +8,34 @@ void powmod2_Bin(big X, big a, big Y, big b, big P, big &Z)
 	lastw = b->w[i];
 	while (lastw >> j && j != 32) j++;
 
+	copy(X, gl_bigs[1]);
+	copy(Y, gl_bigs[2]);
+	mulmod(X, Y, P, gl_bigs[3]);
+	Z->len = 1; Z->w[0] = 1;
+	for (--j; i >= 0; i--, j = 31) {
+		a1 = a->w[i];
+		b1 = b->w[i];
+		while (j) {
+			index = (a1 >> j) & 1;
+			index += ((b1 >> j) & 1) << 1;
+			mulmod(Z, Z, P, Z);
+			if (index) mulmod(Z, gl_bigs[index], P, Z);
+			j--;
+		}
+		index = (a1 & 1) + ((b1 & 1) << 1);
+		mulmod(Z, Z, P, Z);
+		if (index) mulmod(Z, gl_bigs[index], P, Z);
+	}
+}
+
+void powmod2_Bin_old(big X, big a, big Y, big b, big P, big &Z)
+{
+	int i, j = 0, index;
+	DWORD lastw, a1, b1;
+	i = b->len - 1;
+	lastw = b->w[i];
+	while (lastw >> j && j != 32) j++;
+
 	big list[4];
 	list[0] = mirvar(1);
 	list[1] = mirvar(0);
@@ -33,34 +61,6 @@ void powmod2_Bin(big X, big a, big Y, big b, big P, big &Z)
 	}
 	mirkill(list[0]); mirkill(list[1]);
 	mirkill(list[2]); mirkill(list[3]);
-}
-
-void powmod2_Bin_glb(big X, big a, big Y, big b, big P, big &Z)
-{
-	int i, j = 0, index;
-	DWORD lastw, a1, b1;
-	i = b->len - 1;
-	lastw = b->w[i];
-	while (lastw >> j && j != 32) j++;
-
-	copy(X, gl_bigs[1]);
-	copy(Y, gl_bigs[2]);
-	mulmod(X, Y, P, gl_bigs[3]);
-	Z->len = 1; Z->w[0] = 1;
-	for (--j; i >= 0; i--, j = 31) {
-		a1 = a->w[i];
-		b1 = b->w[i];
-		while (j) {
-			index = (a1 >> j) & 1;
-			index += ((b1 >> j) & 1) << 1;
-			mulmod(Z, Z, P, Z);
-			if (index) mulmod(Z, gl_bigs[index], P, Z);
-			j--;
-		}
-		index = (a1 & 1) + ((b1 & 1) << 1);
-		mulmod(Z, Z, P, Z);
-		if (index) mulmod(Z, gl_bigs[index], P, Z);
-	}
 }
 
 void powmod_ShrBin(big X, big k, big P, big &Z)
@@ -155,7 +155,7 @@ void compare_bins(int len, big P, csprng &Rng, Result &res)
 
 			startTimer(&timer3);
 			//powmodn_Bin(2, r, y, P, R3);       // R3 = y1^r1 * y2^r2 mod P
-			powmod2_Bin_glb(X, a, Y, b, P, R3);
+			powmod2_Bin_old(X, a, Y, b, P, R3);
 			stopTimer(&timer3);
 			dur3 = getTickCount(&timer3);
 			min3 = (min3 < dur3) ? min3 : dur3;
