@@ -36,16 +36,16 @@ int main()
 		//testnBin(P, Rng);
 		//test_powmoddJSF(P, Rng);
 		//compares(m[i], P, Rng, res[i]);
-		compare_bins(m[i], P, Rng, res[i]);
+		compare_bin3s(P, Rng, res[i]);
 		//compare_GenJSFs(P, Rng);
 		//test_HammingWeight_dJSF(P, Rng);
 		//cout << endl;
 	}
 	//cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=4)\n";
 	//cout << setw(19) << "" <<   "Bin1          Bin2      Bin2_gblvar         xxx           xxx          lib1\n";
-	//printcompares_bin(res, m);
-	cout << setw(19) << "" <<   "Bin1         Bin2       Bin2_gblvar        lib1\n";
-	printBinOption2(res, m);
+	//printcompares(res, m);
+	cout << setw(19) << "" <<   "Bin3        Bin3gl         Binn3          lib3\n";
+	printBins(res, m);
 
 	//test_GenJSF(P, Rng);
 	//test_GendJSF(P, Rng);

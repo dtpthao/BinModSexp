@@ -111,7 +111,7 @@ void test2Bin(big P, csprng &Rng)
 }
 
 #define REPEAT2 10
-void compare_bins(int len, big P, csprng &Rng, Result &res)
+void compare_bin2s(big P, csprng &Rng, Result &res)
 {
 	stopWatch timer1, timer2, timer3, timer4;
 	LONGLONG dur1, min1 = LONG_MAX,
@@ -189,7 +189,7 @@ void compare_bins(int len, big P, csprng &Rng, Result &res)
 }
 
 #define NUM_OF_P 5
-void printBinOption2(Result res[NUM_OF_P + 1], int *m)
+void printBins(Result res[NUM_OF_P + 1], int *m)
 {
 	const int lib = 3;
 	//for (int i = 0; i < NUM_OF_P; i++) {

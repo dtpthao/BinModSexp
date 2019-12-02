@@ -12,7 +12,7 @@
 
 void compares(int len, big P, csprng &Rng, Result &res);
 
-void printcompares_bin(Result res[NUM_OF_P + 1], int *m);
+void printcompares(Result res[NUM_OF_P + 1], int *m);
 
 
 #endif // !_NEW_TESTS

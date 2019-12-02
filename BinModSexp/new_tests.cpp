@@ -114,7 +114,7 @@ void compares(int len, big P, csprng &Rng, Result &res)
 }
 
 #define NUM_OF_P 5
-void printcompares_bin(Result res[NUM_OF_P + 1], int *m)
+void printcompares(Result res[NUM_OF_P + 1], int *m)
 {
 	const int ilib = 5;
 	res[NUM_OF_P].p[0] = 100;
