@@ -6,68 +6,6 @@
 // [1, y1, y2, y1*y2, y3, y1*y3, y2*y3, y1*y2*y3]
 void prepowmodn_Bin(int n, big *y, big *pre_list, big P)
 {
-	int loop = 1 << n, idx;
-	for (int i = 0; i < loop; i++) pre_list[i] = mirvar(1);
-	for (int i = 0; i < n; i++) {
-		idx = 1 << i;
-		copy(y[i], pre_list[idx]);
-		//printf("pre_list[%d]: ", idx); cotnum(pre_list[idx], stdout);
-		for (int j = 1; j < idx; j++) {
-			mulmod(pre_list[j], pre_list[idx], P, pre_list[idx + j]);
-			//printf("pre_list[%d]: ", idx + j); cotnum(pre_list[idx + j], stdout);
-		}
-	}
-}
-
-// R = y1^r1 * y2^r2 * ... * yn^rn mod P;
-void powmodn_Bin(int n, big *r, big *y, big P, big &R)
-{
-	int i, j = 0, tmp;
-	DWORD last32,
-		*w = new DWORD[n];
-	big *pre_lst = new big[1 << n];
-	prepowmodn_Bin(n, y, pre_lst, P);
-
-	i = r[n - 1]->len - 1;
-	last32 = r[n - 1]->w[i];
-	while (last32 >> j && j != 32) j++;
-
-	R->len = 1; R->w[0] = 1;
-	for (--j; i >= 0; i--, j = 31) {
-		tmp = 0;
-		for (int ii = 0; ii < n; ii++) w[ii] = r[ii]->w[i];
-		while (j) {
-			for (int ii = 0; ii < n; ii++) {
-				tmp += ((w[ii] >> j) & 1) << ii;
-			}
-			//printf("index: %d\n", tmp);
-			mulmod(R, R, P, R);
-			//cout << "R^2: "; cotnum(R, stdout);
-			if (tmp) mulmod(R, pre_lst[tmp], P, R);
-			//cout << "R: "; cotnum(R, stdout);
-			j--;
-			tmp = 0;
-		}
-		for (int ii = 0; ii < n; ii++) {
-			tmp += (w[ii] & 1) << ii;
-		}
-		//printf("tmp: %d\n", tmp);
-		mulmod(R, R, P, R);
-		//cout << "R^2: "; cotnum(R, stdout);
-		if (tmp) mulmod(R, pre_lst[tmp], P, R);
-		//cout << "R: "; cotnum(R, stdout);
-		//cout << endl;
-	}
-	tmp = 1 << n;
-	for (i = 0; i < tmp; i++) mirkill(pre_lst[i]);
-}
-
-// This is complicated to explain in condensed words
-// for example with n = 3:
-//  0   1   2    3     4    5      6        7
-// [1, y1, y2, y1*y2, y3, y1*y3, y2*y3, y1*y2*y3]
-void prepowmodn_Bin_gl(int n, big *y, big *pre_list, big P)
-{
 	int idx;
 	for (int i = 0; i < n; i++) {
 		idx = 1 << i;
@@ -81,7 +19,7 @@ void prepowmodn_Bin_gl(int n, big *y, big *pre_list, big P)
 }
 
 // R = y1^r1 * y2^r2 * ... * yn^rn mod P;
-void powmodn_Bin_gl(int n, big *r, big *y, big P, big &R)
+void powmodn_Bin(int n, big *r, big *y, big P, big &R)
 {
 	int i, j = 0, tmp;
 	DWORD last32,
@@ -121,7 +59,7 @@ void powmodn_Bin_gl(int n, big *r, big *y, big P, big &R)
 	tmp = 1 << n;
 }
 
-#define TESTn 5000
+#define TESTn 50
 #define N 5
 void testnBin(big P, csprng &Rng)
 {
@@ -202,7 +140,7 @@ void compare_binns(big P, csprng &Rng, Result &res)
 			min1 = (min1 < dur1) ? min1 : dur1;
 
 			startTimer(&timer2);
-			powmodn_Bin_gl(3, r, y, P, R2);
+			//powmodn_Bin_gl(3, r, y, P, R2);
 			stopTimer(&timer2);
 			dur2 = getTickCount(&timer2);
 			min2 = (min2 < dur2) ? min2 : dur2;
