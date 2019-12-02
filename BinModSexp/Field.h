@@ -13,8 +13,8 @@ using namespace std;
 
 #define NUM_OF_P	5
 #define LIB			2
-
-extern big gl_bigs[100];
+#define LEN_GL_BIGS 300
+extern big gl_bigs[LEN_GL_BIGS];
 
 struct CONSTANTS_F2m {
 	DWORD m, k3, k2, k1;

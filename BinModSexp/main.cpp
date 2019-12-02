@@ -25,35 +25,35 @@ int main()
 	cinstr(P, sP);
 
 	Result res[6];
-	for (int i = 0; i < 100; i++) gl_bigs[i] = mirvar(0);
+	for (int i = 0; i < LEN_GL_BIGS; i++) gl_bigs[i] = mirvar(0);
 
-	//for (int i = 0; i < 5; i++) {
-	//	bigdig(m[i], 2, P);
-	//	nxprime(P, P);
-	//	//cout << "m = " << m[i] << endl;
-	//	//test2Bin(P, Rng);
-	//	//test3Bin_2(P, Rng);
-	//	//testnBin(P, Rng);
-	//	//test_powmoddJSF(P, Rng);
-	//	//compares(m[i], P, Rng, res[i]);
-	//	compare_JSFs(P, Rng, res[i]);
-	//	//compare_GenJSFs(P, Rng);
-	//	//test_HammingWeight_dJSF(P, Rng);
-	//	//cout << endl;
-	//}
-	////cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=4)\n";
-	////cout << setw(19) << "" <<   "Bin1          Bin2      Bin2_gblvar         xxx           xxx          lib1\n";
-	////printcompares(res, m);
+	for (int i = 0; i < 5; i++) {
+		bigdig(m[i], 2, P);
+		nxprime(P, P);
+		//cout << "m = " << m[i] << endl;
+		//test2Bin(P, Rng);
+		//test3Bin_2(P, Rng);
+		//testnBin(P, Rng);
+		//test_powmoddJSF(P, Rng);
+		compares(m[i], P, Rng, res[i]);
+		//compare_JSFs(P, Rng, res[i]);
+		//compare_GenJSFs(P, Rng);
+		//test_HammingWeight_dJSF(P, Rng);
+		//cout << endl;
+	}
+	//cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=4)\n";
+	cout << setw(19) << "" <<   "Bin1          JSF2          JSF3          JSF4          JSF5          lib1\n";
+	printcompares(res, m);
 	//cout << setw(19) << "" <<   "Bin2           JSF         JSFgl          lib3\n";
 	//printBins(res, m);
 
 	//test_GenJSF(P, Rng);
-	test_correctness_GendJSF(P, Rng);
+	//test_correctness_GendJSF(P, Rng);
 	//bigdig(1024, 2, P);
 	//nxprime(P, P);
 	//test_powmoddJSF(P, Rng);
 
-	for (int i = 0; i < 100; i++) mirkill(gl_bigs[i]);
+	for (int i = 0; i < LEN_GL_BIGS; i++) mirkill(gl_bigs[i]);
 
 	mirkill(P);
 	mirexit();

@@ -1,6 +1,6 @@
 ﻿#include "Field.h"
 
-big gl_bigs[100];
+big gl_bigs[LEN_GL_BIGS];
 
 void InitStrongRNG(csprng *Rng)
 {

@@ -86,12 +86,11 @@ void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 	for (i = 0; i < d; i++) dJSF[i] = new char[1000];
 	DWORD lendJSF;
 	for (i = 0; i < d; i++) tmp *= 3;
-	big *plist = new big[tmp];
-	for (i = 0; i < tmp; i++) plist[i] = mirvar(0);
 	
 	I0 = tmp >> 1;
-	prePowMod_dJSF(d, tmp, y, P, plist);
+	// gl_bigs is used inside GendJSF, hence calling GendJSF before prePowMod_dJSF
 	lendJSF = GendJSF(d, r, dJSF);
+	prePowMod_dJSF(d, tmp, y, P, gl_bigs);
 	R->len = 1; R->w[0] = 1;
 	for (i = lendJSF - 1; i >= 0; i--) {
 		idx = I0;
@@ -99,12 +98,11 @@ void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 			idx -= tmp * dJSF[j][i];
 		}
 		mulmod(R, R, P, R);
-		if (idx != I0) mulmod(R, plist[idx], P, R);
+		if (idx != I0) mulmod(R, gl_bigs[idx], P, R);
 	}
 	
 	for (i = 0; i < d; i++) delete[] dJSF[i];
 	delete[] dJSF;
-	for (i = 0; i < tmp; i++) mirkill(plist[i]);
 }
 
 void test_correctness_GendJSF(big P, csprng &Rng)
@@ -271,4 +269,5 @@ void test_powmoddJSF(big P, csprng &Rng)
 	mirkill(k);mirkill(g);
 	mirkill(Z); mirkill(Z1); mirkill(Z2);
 }
+
 
