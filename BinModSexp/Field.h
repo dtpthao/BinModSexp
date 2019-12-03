@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <time.h>
 #include <stdio.h>
+#include <iomanip>
 extern "C" {
 #include"miracl.h"
 }

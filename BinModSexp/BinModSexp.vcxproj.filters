@@ -60,6 +60,9 @@
     <ClCompile Include="d-JSF.cpp">
       <Filter>Source Files\JSF</Filter>
     </ClCompile>
+    <ClCompile Include="test_JSFs.cpp">
+      <Filter>Source Files\JSF</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="ms32.lib">

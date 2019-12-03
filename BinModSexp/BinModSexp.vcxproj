@@ -128,6 +128,7 @@
     <ClCompile Include="pow3bin.cpp" />
     <ClCompile Include="pownbin.cpp" />
     <ClCompile Include="shr_decomp.cpp" />
+    <ClCompile Include="test_JSFs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="ms32.lib" />
