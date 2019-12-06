@@ -1,6 +1,6 @@
 #include "new_tests.h"
 
-#define TESTS 5000
+#define TESTS 20000
 #define REPEAT 10
 void compares(int len, big P, csprng &Rng, Result &res)
 {
@@ -36,7 +36,7 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			// bin2
 			startTimer(&timer2);
 			ShamirDecomposit(k, a, b, X, Y, P);
-			powmod2_Bin(X, a, Y, b, P, R2);		// R2 = X^a * Y^b mod P
+			//powmod2_Bin(X, a, Y, b, P, R2);		// R2 = X^a * Y^b mod P
 			//powmod_JSF(X, a, Y, b, P, R2);		// R2 = X^a * Y^b mod P
 			//powmod2(X, a, Y, b, P, R2);
 			stopTimer(&timer2);
@@ -46,7 +46,7 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			// bin3
 			startTimer(&timer3);
 			ShamirDecomposit3(k, g, r, y, P);
-			powmod3_Bin(r, y, P, R3);			// R3 = y1^r1 * y2^r2 * y3^r3
+			//powmod3_Bin(r, y, P, R3);			// R3 = y1^r1 * y2^r2 * y3^r3
 			//powmod_dJSF(3, y, r, P, R3);
 			//powmodn(3, y, r, P, R3);
 			stopTimer(&timer3);
@@ -56,7 +56,7 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			// bin4
 			startTimer(&timer4);
 			ShamirDecomposit_n(4, k, g, r, y, P);
-			powmodn_Bin(4, r, y, P, R4);		// R4 = y1^r1 * ...* y4^r4
+			//powmodn_Bin(4, r, y, P, R4);		// R4 = y1^r1 * ...* y4^r4
 			//powmod_dJSF(4, y, r, P, R4);
 			//powmodn(4, y, r, P, R4);
 			stopTimer(&timer4);
@@ -66,7 +66,7 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			// bin5
 			startTimer(&timer5);
 			ShamirDecomposit_n(5, k, g, r, y, P);
-			powmodn_Bin(5, r, y, P, R5);
+			//powmodn_Bin(5, r, y, P, R5);
 			//powmod_dJSF(5, y, r, P, R5);
 			//powmodn(5, y, r, P, R5);
 			stopTimer(&timer5);
@@ -75,18 +75,18 @@ void compares(int len, big P, csprng &Rng, Result &res)
 
 			// lib1
 			startTimer(&timer6);
-			//ShamirDecomposit_n(4, k, g, r, y, P);
+			ShamirDecomposit_n(3, k, g, r, y, P);
 			//powmodn(4, y, r, P, R);
-			powmod(g, k, P, R);
+			//powmod(g, k, P, R);
 			stopTimer(&timer6);
 			dur6 = getTickCount(&timer6);
 			min6 = (min6 < dur6) ? min6 : dur6;
 		}
-		res.c[0] += !compare(R, R1);
-		res.c[1] += !compare(R, R2);
-		res.c[2] += !compare(R, R3);
-		res.c[3] += !compare(R, R4);
-		res.c[4] += !compare(R, R5);
+		//res.c[0] += !compare(R, R1);
+		//res.c[1] += !compare(R, R2);
+		//res.c[2] += !compare(R, R3);
+		//res.c[3] += !compare(R, R4);
+		//res.c[4] += !compare(R, R5);
 		res.t[0] += min1;
 		res.t[1] += min2;
 		res.t[2] += min3;
