@@ -42,8 +42,9 @@ int main()
 		//cout << endl;
 		//compare_prepowmodJSFs(P, Rng, res[i]);
 	}
+	cout << endl << "without Shamir decomposition" << endl;
 	//cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=4)\n";
-	cout << setw(19) << "ModExp          " <<   "Bin1          Shr2          Shr3         Shrn4         Shrn5          Shrn3\n";
+	cout << setw(19) << "ModExp          " << "Bin1          Bin2          Bin3          Bin4          Bin5          lib1\n";
 	printcompares(res, m);
 	//cout << setw(19) << "" <<   "JSF           JSF3         JSF4          JSF5\n";
 	//printBins(res, m);
