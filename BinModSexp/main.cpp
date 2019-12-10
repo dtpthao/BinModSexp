@@ -44,7 +44,7 @@ int main()
 	}
 	cout << endl << "without Shamir decomposition" << endl;
 	//cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=4)\n";
-	cout << setw(19) << "ModExp          " << "Bin1          lib2          lib3          lib4          lib5          lib1\n";
+	cout << setw(19) << "ModExp          " << "Bin1          JSF2          JSF3          JSF4          JSF5          lib1\n";
 	printcompares(res, m);
 	//cout << setw(19) << "" <<   "JSF           JSF3         JSF4          JSF5\n";
 	//printBins(res, m);
