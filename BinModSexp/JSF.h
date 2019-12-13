@@ -11,16 +11,6 @@ DWORD GenJSF(big R, big S, char *JSFr, char *JSFs);
 inline void prePowModJSF(big X, big Y, big P, big *lst);
 void powmod_JSF(big X, big a, big Y, big b, big P, big Z);
 
-/*______________________don't use these functions____________________________*/
-inline void subGenJSF(big Var1, big Var2, char &JSFi, bool &d, big RS);
-DWORD GenJSF2(big R, big S, char *JSFr, char *JSFs);
-
-inline void prePowModJSF(big X, big X1, big Y, big Y1, big P, big *lst);
-void powmod2_JSF(big X, big X1, big a, big Y, big Y1, big b, big P, big Z);
-//void powmod_ShrJSF(big X, big k, big P, big Z);
-//void powmod_JSF(big *lst, big a, big b, big P, big Z);
-/*___________________________________________________________________________*/
-
 void test_GenJSF(big P, csprng &Rng);
 void compare_GenJSFs(big P, csprng &Rng);
 void testJSF(big P, csprng &Rng);
