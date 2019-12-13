@@ -123,7 +123,6 @@
     <ClCompile Include="JSF.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mrpower.c" />
-    <ClCompile Include="old_tests.cpp" />
     <ClCompile Include="pow2bin.cpp" />
     <ClCompile Include="pow3bin.cpp" />
     <ClCompile Include="pownbin.cpp" />
@@ -140,7 +139,6 @@
     <ClInclude Include="JSF.h" />
     <ClInclude Include="miracl.h" />
     <ClInclude Include="new_tests.h" />
-    <ClInclude Include="old_tests.h" />
     <ClInclude Include="shr_decomp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

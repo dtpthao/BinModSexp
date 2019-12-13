@@ -33,9 +33,6 @@
     <ClCompile Include="mrpower.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_tests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pow3bin.cpp">
       <Filter>Source Files\bin</Filter>
     </ClCompile>
@@ -83,9 +80,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JSF.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="old_tests.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="new_tests.h">
