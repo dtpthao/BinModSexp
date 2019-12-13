@@ -28,51 +28,6 @@ void powmod2_Bin(big X, big a, big Y, big b, big P, big &Z)
 	}
 }
 
-void powmod2_Bin_old(big X, big a, big Y, big b, big P, big &Z)
-{
-	int i, j = 0, index;
-	DWORD lastw, a1, b1;
-	i = b->len - 1;
-	lastw = b->w[i];
-	while (lastw >> j && j != 32) j++;
-
-	big list[4];
-	list[0] = mirvar(1);
-	list[1] = mirvar(0);
-	list[2] = mirvar(0);
-	list[3] = mirvar(0);
-	copy(X, list[1]);
-	copy(Y, list[2]);
-	mulmod(X, Y, P, list[3]);
-	Z->len = 1; Z->w[0] = 1;
-	for (--j; i >= 0; i--, j = 31) {
-		a1 = a->w[i];
-		b1 = b->w[i];
-		while (j) {
-			index = (a1 >> j) & 1;
-			index += ((b1 >> j) & 1) << 1;
-			mulmod(Z, Z, P, Z);
-			if (index) mulmod(Z, list[index], P, Z);
-			j--;
-		}
-		index = (a1 & 1) + ((b1 & 1) << 1);
-		mulmod(Z, Z, P, Z);
-		if (index) mulmod(Z, list[index], P, Z);
-	}
-	mirkill(list[0]); mirkill(list[1]);
-	mirkill(list[2]); mirkill(list[3]);
-}
-
-void powmod_ShrBin(big X, big k, big P, big &Z)
-{
-	big a = mirvar(1),
-		b = mirvar(1),
-		Y = mirvar(1);
-	ShamirDecomposit(k, a, b, X, Y, P);
-	powmod2_Bin(X, a, Y, b, P, Z);
-	mirkill(a); mirkill(b); mirkill(Y);
-}
-
 #define TEST2 10000
 void test2Bin(big P, csprng &Rng)
 {
@@ -155,7 +110,7 @@ void compare_bin2s(big P, csprng &Rng, Result &res)
 
 			startTimer(&timer3);
 			//powmodn_Bin(2, r, y, P, R3);       // R3 = y1^r1 * y2^r2 mod P
-			powmod2_Bin_old(X, a, Y, b, P, R3);
+			//powmod2_Bin_old(X, a, Y, b, P, R3);
 			stopTimer(&timer3);
 			dur3 = getTickCount(&timer3);
 			min3 = (min3 < dur3) ? min3 : dur3;
@@ -192,16 +147,7 @@ void compare_bin2s(big P, csprng &Rng, Result &res)
 void printBins(Result res[NUM_OF_P + 1], int *m)
 {
 	const int lib = 3;
-	//for (int i = 0; i < NUM_OF_P; i++) {
-	//	for (int i = 1; i <= LIB; i++) {
-	//		res[i].t[i] /= TEST2;
-	//		res[i].p[i] = (res[i].t[i] / res[i].t[0]) * 100;
-	//	}
-	//}
 	res[NUM_OF_P].p[0] = 100;
-	//res[NUM_OF_P].p[1] /= NUM_OF_P;
-	//res[NUM_OF_P].p[2] /= NUM_OF_P;
-	//res[NUM_OF_P].p[3] /= NUM_OF_P;
 
 	for (int i = 0; i <= NUM_OF_P; i++) {
 		res[i].p[0] = 100;
