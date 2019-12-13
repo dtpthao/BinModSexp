@@ -10,10 +10,8 @@ void prepowmodn_Bin(int n, big *y, big *pre_list, big P)
 	for (int i = 0; i < n; i++) {
 		idx = 1 << i;
 		copy(y[i], pre_list[idx]);
-		//printf("pre_list[%d]: ", idx); cotnum(pre_list[idx], stdout);
 		for (int j = 1; j < idx; j++) {
 			mulmod(pre_list[j], pre_list[idx], P, pre_list[idx + j]);
-			//printf("pre_list[%d]: ", idx + j); cotnum(pre_list[idx + j], stdout);
 		}
 	}
 }
@@ -38,23 +36,16 @@ void powmodn_Bin(int n, big *r, big *y, big P, big &R)
 			for (int ii = 0; ii < n; ii++) {
 				tmp += ((w[ii] >> j) & 1) << ii;
 			}
-			//printf("index: %d\n", tmp);
 			mulmod(R, R, P, R);
-			//cout << "R^2: "; cotnum(R, stdout);
 			if (tmp) mulmod(R, gl_bigs[tmp], P, R);
-			//cout << "R: "; cotnum(R, stdout);
 			j--;
 			tmp = 0;
 		}
 		for (int ii = 0; ii < n; ii++) {
 			tmp += (w[ii] & 1) << ii;
 		}
-		//printf("tmp: %d\n", tmp);
 		mulmod(R, R, P, R);
-		//cout << "R^2: "; cotnum(R, stdout);
 		if (tmp) mulmod(R, gl_bigs[tmp], P, R);
-		//cout << "R: "; cotnum(R, stdout);
-		//cout << endl;
 	}
 	tmp = 1 << n;
 }
