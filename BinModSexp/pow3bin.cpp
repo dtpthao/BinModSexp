@@ -45,58 +45,8 @@ void powmod3_Bin(big *r, big *y, big P, big &R)
 	}
 }
 
-void powmod3_ShrBin(big X, big k, big P, big &Z)
-{
-	big r1 = mirvar(1),
-		r2 = mirvar(1),
-		r3 = mirvar(1),
-		y1 = mirvar(1),
-		y2 = mirvar(1),
-		y3 = mirvar(1);
-	ShamirDecomposit3(k, r1, r2, r3, y1, y2, y3, P);
-	powmod3_Bin(r1, r2, r3, y1, y2, y3, P, Z);
-	mirkill(r1); mirkill(r2); mirkill(r3);
-	mirkill(y1); mirkill(y2); mirkill(y3);
-}
-
 #define TEST3 5000
 void test3Bin(big P, csprng &Rng)
-{
-	big k = mirvar(0);
-	big r1 = mirvar(0), r2 = mirvar(0), r3 = mirvar(0),
-		y1 = mirvar(0), y2 = mirvar(0), y3 = mirvar(0);
-	big	R = mirvar(0), R1 = mirvar(0);
-	//r1 = r2 = r3 = y1 = y2 = y3 = R = R1 = mirvar(0); ==> just to remember that this is unusable
-	//k = mirvar(0x69D); y[1] = mirvar(3);
-	//nxprime(k, P);
-	strong_bigrand(&Rng, P, y1);
-	cout << "P: "; cotnum(P, stdout);
-
-	int count = TEST3;
-	for (int i = 0; i < TEST3; i++) {
-		//strong_bigrand(&Rng, P, k);
-		ShamirDecomposit3(k, r1, r2, r3, y1, y2, y3, P);
-		cout << "k: "; cotnum(k, stdout);
-		cout << "r1: "; cotnum(r1, stdout);
-		cout << "r2: "; cotnum(r2, stdout);
-		cout << "r3: "; cotnum(r3, stdout);
-		cout << "y1: "; cotnum(y1, stdout);
-		cout << "y2: "; cotnum(y2, stdout);
-		cout << "y3: "; cotnum(y3, stdout);
-
-		powmod3_Bin(r1, r2, r3, y1, y2, y3, P, R1);
-		//cout << "R1: "; cotnum(R1, stdout);
-		powmod(y1, k, P, R);
-		//cout << "R : "; cotnum(R, stdout);
-		count -= compare(R, R1);
-	}
-	printf("correct: %d\n\n", count);
-	mirkill(r1); mirkill(r2); mirkill(r3);
-	mirkill(y1); mirkill(y2); mirkill(y3);
-	mirkill(R); mirkill(R1); mirkill(k);
-}
-
-void test3Bin_2(big P, csprng &Rng)
 {
 	big k = mirvar(0);
 	big	R = mirvar(0), R1 = mirvar(0);
