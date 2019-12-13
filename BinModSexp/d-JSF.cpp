@@ -67,13 +67,11 @@ void prePowMod_dJSF(int d, int len, big *y, big P, big *plist)
 		copy(y[i], plist[downi]);								// y[i]
 		copy(y[i], plist[upi]);
 		xgcd(plist[upi], P, plist[upi], plist[upi], plist[upi]);// 1/y[i]
-		//printf("indexes: %d\t%d\n", upi, downi);
 		for (k = 1; k <= (j >> 1); k++) {
 			mulmod(plist[upi], plist[i0 + k], P, plist[upi + k]);
 			mulmod(plist[upi], plist[i0 - k], P, plist[upi - k]);
 			mulmod(plist[downi], plist[i0 + k], P, plist[downi + k]);
 			mulmod(plist[downi], plist[i0 - k], P, plist[downi - k]);
-			//printf("indexes: %d\t%d\t%d\t%d\n", upi + k, upi - k, downi + k, downi - k);
 		}
 	}
 }
@@ -142,7 +140,6 @@ void test_correctness_GendJSF(big P, csprng &Rng)
 		mirkill(x2);
 	}
 	
-
 	for (int i = 0; i < d; i++) {
 		mirkill(x[i]);
 		delete[] dJSF[i];
