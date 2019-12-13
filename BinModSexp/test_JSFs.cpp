@@ -89,7 +89,6 @@ void compare_prepowmodJSFs(big P, csprng &Rng, Result &res)
 	mirkill(g); mirkill(k);mirkill(R);
 }
 
-#define NUM_OF_P 5
 void printcompares_JSFs(Result res[NUM_OF_P + 1], int *m)
 {
 	const int lib = 4;
