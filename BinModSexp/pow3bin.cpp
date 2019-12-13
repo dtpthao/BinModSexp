@@ -11,14 +11,10 @@ void prepowmod3_Bin(big y1, big y2, big y3, big *y, big P)
 	mulmod(y1, y3, P, y[5]);
 	mulmod(y2, y3, P, y[6]);
 	mulmod(y[6], y1, P, y[7]);
-	//for (int i = 0; i < 8; i++) {
-	//	printf("y[%d]: ", i); cotnum(y[i], stdout);
-	//}
 }
 
 // R = g^k = y0^r0 * y1^r1 * y2^r2
 // Bit length of r2 is greater than bit length of r0, r1 by bitlen of k mod 3
-// This is currently effective.
 void powmod3_Bin(big *r, big *y, big P, big &R)
 {
 	int bit1, bit2, bit3, i, j = 0, index;
@@ -39,62 +35,14 @@ void powmod3_Bin(big *r, big *y, big P, big &R)
 			bit2 = ((w2 >> j) & 1) << 1;
 			bit3 = ((w3 >> j) & 1) << 2;
 			index = bit1 + bit2 + bit3;
-			//printf("index: %d\n", index);
 			mulmod(R, R, P, R);
-			//cout << "R^2: "; cotnum(R, stdout);
 			if (index) mulmod(R, gl_bigs[index], P, R);
-			//cout << "R: "; cotnum(R, stdout);
 			j--;
 		}
 		index = (w1 & 1) + ((w2 & 1) << 1) + ((w3 & 1) << 2);
-		//printf("index: %d\n", index);
 		mulmod(R, R, P, R);
-		//cout << "R^2: "; cotnum(R, stdout);
 		if (index) mulmod(R, gl_bigs[index], P, R);
-		//cout << "R: "; cotnum(R, stdout);
-		//cout << endl;
 	}
-}
-
-// R = g^k = y0^r0 * y1^r1 * y2^r2
-// Bit length of r[i] (i = [0, 1]) is greater than bit length of r2 by 1 
-// ==> seems a stupid idea
-void powmod3_Bin(big r1, big r2, big r3, big y1, big y2, big y3, big P, big &R)
-{
-	int bit1, bit2, bit3, i, j = 0, index;
-	DWORD last32, w1, w2, w3;
-	big y[8];
-	prepowmod3_Bin(y1, y2, y3, y, P);
-
-	i = r3->len - 1;
-	last32 = r3->w[i];
-	while (last32 >> j && j != 32) j++;
-
-	R->len = 1; R->w[0] = 1;
-	for (j; i >= 0; i--, j = 31) {
-		w1 = r1->w[i];
-		w2 = r2->w[i];
-		w3 = r3->w[i];
-		while (j) {
-			bit1 = (w1 >> j) & 1;
-			bit2 = ((w2 >> j) & 1) << 1;
-			bit3 = ((w3 >> j) & 1) << 2;
-			index = bit1 + bit2 + bit3;
-			//printf("index: %d\n", index);
-			mulmod(R, R, P, R);
-			//cout << "R^2: "; cotnum(R, stdout);
-			if (index) mulmod(R, y[index], P, R);
-			//cout << "R: "; cotnum(R, stdout);
-			j--;
-		}
-		index = (w1 & 1) + ((w2 & 1) << 1) + ((w3 & 1) << 2);
-		//printf("index: %d\n", index);
-		mulmod(R, R, P, R);
-		//cout << "R^2: "; cotnum(R, stdout);
-		if (index) mulmod(R, y[index], P, R);
-		//cout << "R: "; cotnum(R, stdout);
-	}
-	for (i = 0; i < 8; i++) mirkill(y[i]);
 }
 
 void powmod3_ShrBin(big X, big k, big P, big &Z)
