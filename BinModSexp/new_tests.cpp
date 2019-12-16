@@ -49,21 +49,21 @@ void compares(int len, big P, csprng &Rng, Result &res)
 
 			// JSF3
 			//ShamirDecomposit3(k, g, r, y, P);
+			ShamirDecomposit_n(6, k, g, r, y, P);
 			startTimer(&timer3);
 			//ShamirDecomposit3(k, g, r, y, P);
 			//powmod3_Bin(r, y, P, R3);			// R3 = y1^r1 * y2^r2 * y3^r3
 			//powmod_dJSF(3, y, r, P, R3);
 			//powmodn(3, y, r, P, R3);
-			ShamirDecomposit_n(6, k, g, r, y, P);
 			powmodn_Bin(6, r, y, P, R3);
 			stopTimer(&timer3);
 			dur3 = getTickCount(&timer3);
 			min3 = (min3 < dur3) ? min3 : dur3;
 
 			// bin6
-			//ShamirDecomposit_n(4, k, g, r, y, P);
-			startTimer(&timer4);
 			ShamirDecomposit_n(7, k, g, r, y, P);
+			startTimer(&timer4);
+			//ShamirDecomposit_n(7, k, g, r, y, P);
 			powmodn_Bin(7, r, y, P, R4);		// R4 = y1^r1 * ...* y4^r4
 			//powmod_dJSF(4, y, r, P, R4);
 			//powmodn(4, y, r, P, R4);
@@ -72,11 +72,11 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			min4 = (min4 < dur4) ? min4 : dur4;
 
 			// JSF1
-			ShamirDecomposit_n(1, k, g, r, y, P);
+			//ShamirDecomposit_n(1, k, g, r, y, P);
+			copy(g, y[0]); copy(k, r[0]);
 			startTimer(&timer5);
 			//ShamirDecomposit_n(5, k, g, r, y, P);
 			//powmodn_Bin(5, r, y, P, R5);
-			copy(g, y[0]); copy(k, r[0]);
 			powmod_dJSF(1, y, r, P, R5);
 			//powmodn(5, y, r, P, R5);
 			stopTimer(&timer5);
