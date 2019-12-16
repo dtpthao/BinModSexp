@@ -83,7 +83,7 @@ void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 {
 	int tmp = 1, I0, idx = 0, i, j;
 	char **dJSF = new char*[d]; 
-	for (i = 0; i < d; i++) dJSF[i] = new char[1000];
+	for (i = 0; i < d; i++) dJSF[i] = new char[1600];
 	DWORD lendJSF;
 	for (i = 0; i < d; i++) tmp *= 3;
 	
