@@ -8,10 +8,10 @@
 /* powbin.cpp */
 void powmod_Bin(big X, big k, big P, big &Z);
 void nrespowmod_Bin(big X, big k, big P, big &Z);
+void testBin(big P, csprng &Rng);
 
 /* pow2bin.cpp */
 void powmod2_Bin(big X, big a, big Y, big b, big P, big &Z);
-void testBin(big P, csprng &Rng);
 void test2Bin(big P, csprng &Rng);
 void compare_bin2s(big P, csprng &Rng, Result &res);
 void printBins(Result res[NUM_OF_P + 1], int *m);
