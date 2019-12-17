@@ -35,20 +35,22 @@ int main()
 		//test3Bin_2(P, Rng);
 		//testnBin(P, Rng);
 		//test_powmoddJSF(P, Rng);
-		compares(m[i], P, Rng, res[i]);
+		//compares(m[i], P, Rng, res[i]);
 		//compare_JSFs(P, Rng, res[i]);
 		//compare_GenJSFs(P, Rng);
 		//test_HammingWeight_dJSF(P, Rng);
 		//cout << endl;
 		//compare_prepowmodJSFs(P, Rng, res[i]);
+		compare_Sqr_Mul_ivrt(Rng, P, res[i], m[i]);
 	}
-	cout << endl << "without Shamir decomposition" << endl;
-	//cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=4)\n";
-	cout << setw(19) << "ModExp          " << "Bin1           xxx          Bin6          Bin7          JSF1          lib1\n";
-	printcompares(res, m);
-	//cout << setw(19) << "" <<   "JSF           JSF3         JSF4          JSF5\n";
-	//printBins(res, m);
-	//printcompares_JSFs(res, m);
+	//cout << endl << "without Shamir decomposition" << endl;
+	////cout << setw(19) << "" << "n=1           n=2           n=3           n=4           n=5        lib(n=4)\n";
+	//cout << setw(19) << "ModExp          " << "Bin1           xxx          Bin6          Bin7          JSF1          lib1\n";
+	//printcompares(res, m);
+	////cout << setw(19) << "" <<   "JSF           JSF3         JSF4          JSF5\n";
+	////printBins(res, m);
+	////printcompares_JSFs(res, m);
+	print_S_M_I(res, m);
 
 	//test_GenJSF(P, Rng);
 	//test_correctness_GendJSF(P, Rng);

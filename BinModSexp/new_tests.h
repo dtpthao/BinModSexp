@@ -14,5 +14,8 @@ void compares(int len, big P, csprng &Rng, Result &res);
 
 void printcompares(Result res[NUM_OF_P + 1], int *m);
 
+void compare_Sqr_Mul_ivrt(csprng &Rng, big P, Result &res, int m);
+
+void print_S_M_I(Result res[NUM_OF_P + 1], int *m);
 
 #endif // !_NEW_TESTS
