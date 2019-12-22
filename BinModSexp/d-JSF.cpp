@@ -107,7 +107,7 @@ void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 
 void test_correctness_GendJSF(big P, csprng &Rng)
 {
-	const int d = 3;
+	const int d = 2;
 	big *x = new big[d];
 	big x2 = mirvar(0);
 	DWORD lendJSF;
@@ -117,7 +117,7 @@ void test_correctness_GendJSF(big P, csprng &Rng)
 		x[i] = mirvar(0);
 		dJSF[i] = new char[200];
 	}
-	big k = mirvar(0xE3B7);
+	big k = mirvar(0x3B7);
 
 	//strong_bigrand(&Rng, P, k);
 	//strong_bigdig(&Rng, 9, 16, k);
@@ -125,14 +125,14 @@ void test_correctness_GendJSF(big P, csprng &Rng)
 	//cinstr(k, sk);
 	//cout << "k : "; cotnum(k, stdout);
 	ShamirDecomposit_nk(d, k, x);
-	//lendJSF = GenJSF(x[0], x[1], dJSF[0], dJSF[1]);
-	lendJSF = GendJSF(d, x, dJSF);
+	lendJSF = GenJSF(x[0], x[1], dJSF[0], dJSF[1]);
+	//lendJSF = GendJSF(d, x, dJSF);
 	cout << lendJSF << endl;
 	
 	for (int i = 0; i < d; i++) {
 		x2 = mirvar(0);
 		cout << "JSF[" << i << "]: ";
-		for (int j = lendJSF - 1; j >= 0; j--) {
+		for (int j = lendJSF; j > 0; j--) {
 			//sftbit(x2, 1, x2);
 			//incr(x2, dJSF[i][j], x2);
 			printf("%2d", dJSF[i][j]);

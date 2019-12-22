@@ -89,3 +89,65 @@ void testBin(big P, csprng &Rng)
 	mirkill(k); mirkill(Z); mirkill(Z1);
 }
 
+WORD GetBin(big k, char*Bit)
+{
+	DWORD i = 0;
+	big d = mirvar(1);
+	copy(k, d);
+	while (d->len > 1 || (d->len ==1 && d->w[0] > 1)) {
+		if (d->w[0] & 1) Bit[i] = 1;
+		else Bit[i] = 0;
+		sftbit(d, -1, d);
+		i++;
+	}
+	Bit[i] = 1;
+	mirkill(d);
+	return ++i;
+}
+
+void test_HammingWeight_dBin(big P, csprng &Rng)
+{
+	big *x = new big[6];
+	char **dBin = new char*[6];
+	for (int i = 0; i < 6; i++) {
+		x[i] = mirvar(0);
+		dBin[i] = new char[1600];
+	}
+	big k = mirvar(0);
+	DWORD lenBin = 0, tmp;
+	int count = 0;
+	bool b = 0;
+	double weight = 0;
+	const int TIMES = 50000;
+	printf(" d | Testing times | Average hamming weight\n");
+	for (int d = 1; d < 6; d++) {
+		weight = 0;
+		for (int i = 0; i < TIMES; i++) {
+			strong_bigrand(&Rng, P, k);
+			ShamirDecomposit_nk(d, k, x);
+			for (int j = 0; j < d; j++) {
+				tmp = GetBin(x[j], dBin[j]);
+				if (lenBin < tmp) lenBin = tmp;
+			}
+			count = 0;
+			for (int j = lenBin - 1; j >= 0; j--) {
+				b = 0;
+				for (int ii = 0; ii < d; ii++) {
+					b |= dBin[ii][j];
+				}
+				if (!b) count++;
+			}
+			weight += (double)count / lenBin;
+		}
+		weight /= TIMES;
+		printf(" %d |     %5d     |      %f\n", d, TIMES, (1 - weight));
+	}
+
+	for (int i = 0; i < 6; i++) {
+		mirkill(x[i]);
+		delete[] dBin[i];
+	}
+	delete[] dBin;
+	mirkill(k);
+}
+

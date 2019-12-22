@@ -8,6 +8,7 @@
 /* powbin.cpp */
 void powmod_Bin(big X, big k, big P, big &Z);
 void nrespowmod_Bin(big X, big k, big P, big &Z);
+void test_HammingWeight_dBin(big P, csprng &Rng);
 
 /* pow2bin.cpp */
 void powmod2_Bin(big X, big a, big Y, big b, big P, big &Z);
