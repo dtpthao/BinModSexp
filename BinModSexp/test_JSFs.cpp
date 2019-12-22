@@ -1,6 +1,6 @@
 #include "JSF.h"
 
-#define TESTJSFs 5000
+#define TESTJSFs 10000
 #define REPEATJSFs 10
 void compare_prepowmodJSFs(big P, csprng &Rng, Result &res)
 {
@@ -117,7 +117,7 @@ void compare_prepowmodJSFs(big P, csprng &Rng, Result &res)
 #define NUM_OF_P 5
 void printcompares_JSFs(Result res[NUM_OF_P + 1], int *m)
 {
-	const int lib = 4;
+	const int lib = 5;
 	res[NUM_OF_P].p[0] = 100;
 
 	for (int i = 0; i <= NUM_OF_P; i++) {
