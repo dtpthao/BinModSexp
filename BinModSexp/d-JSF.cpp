@@ -7,23 +7,21 @@ DWORD GendJSF(int d, big *r, char **dJSF)
 	int i, j, a0, a1, tmp;
 	int A[2];
 	DWORD lenJSF;
-	big *x = new big[d];
 
 	i = j = lenJSF = a0 = A[0] = 0;
 	bool loop = false;
 	for (; i < d; i++) {
-		x[i] = mirvar(0);
-		copy(r[i], x[i]);
-		if (x[i]->w[0] & 1) A[a0] += 1 << i;
-		loop |= !(x[i]->len == 1 && x[i]->w[0] == 0 || x[i]->len == 0);
+		copy(r[i], gl_bigs[i]);
+		if (gl_bigs[i]->w[0] & 1) A[a0] += 1 << i;
+		loop |= !(gl_bigs[i]->len == 1 && gl_bigs[i]->w[0] == 0 || gl_bigs[i]->len == 0);
 	}
 
 	while (loop) {
 		a1 = a0 ^ 1;
 		A[a1] = 0;
 		for (i = 0; i < d; i++) {
-			dJSF[i][lenJSF] = x[i]->w[0] & 1;
-			if (x[i]->w[0] & 2) A[a1] += 1 << i;
+			dJSF[i][lenJSF] = gl_bigs[i]->w[0] & 1;
+			if (gl_bigs[i]->w[0] & 2) A[a1] += 1 << i;
 		}
 
 		/* check if A[a1] is a subset of A[a0] */
@@ -44,19 +42,18 @@ DWORD GendJSF(int d, big *r, char **dJSF)
 
 		loop = false;
 		for (i = 0; i < d; i++) {
-			sftbit(x[i], -1, x[i]);
+			sftbit(gl_bigs[i], -1, gl_bigs[i]);
 			if (dJSF[i][lenJSF] == -1) {
-				if (x[i]->len == 0) x[i]->len = 1;
-				if (x[i]->w[0] ^ 0xffffffff) x[i]->w[0]++;
-				else incr(x[i], 1, x[i]);
+				if (gl_bigs[i]->len == 0) gl_bigs[i]->len = 1;
+				if (gl_bigs[i]->w[0] ^ 0xffffffff) gl_bigs[i]->w[0]++;
+				else incr(gl_bigs[i], 1, gl_bigs[i]);
 			}
-			loop |= !(x[i]->len == 1 && x[i]->w[0] == 0 || x[i]->len == 0);
+			loop |= !(gl_bigs[i]->len == 1 && gl_bigs[i]->w[0] == 0 || gl_bigs[i]->len == 0);
 		}
 		lenJSF++;
 		a0 = a1;
 	}
 
-	for (i = 0; i < d; i++) mirkill(x[i]);
 	return lenJSF;
 }
 
@@ -70,13 +67,11 @@ void prePowMod_dJSF(int d, int len, big *y, big P, big *plist)
 		copy(y[i], plist[downi]);								// y[i]
 		copy(y[i], plist[upi]);
 		xgcd(plist[upi], P, plist[upi], plist[upi], plist[upi]);// 1/y[i]
-		//printf("indexes: %d\t%d\n", upi, downi);
 		for (k = 1; k <= (j >> 1); k++) {
 			mulmod(plist[upi], plist[i0 + k], P, plist[upi + k]);
 			mulmod(plist[upi], plist[i0 - k], P, plist[upi - k]);
 			mulmod(plist[downi], plist[i0 + k], P, plist[downi + k]);
 			mulmod(plist[downi], plist[i0 - k], P, plist[downi - k]);
-			//printf("indexes: %d\t%d\t%d\t%d\n", upi + k, upi - k, downi + k, downi - k);
 		}
 	}
 }
@@ -89,12 +84,11 @@ void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 	for (i = 0; i < d; i++) dJSF[i] = new char[1000];
 	DWORD lendJSF;
 	for (i = 0; i < d; i++) tmp *= 3;
-	big *plist = new big[tmp];
-	for (i = 0; i < tmp; i++) plist[i] = mirvar(0);
 	
 	I0 = tmp >> 1;
-	prePowMod_dJSF(d, tmp, y, P, plist);
+	// gl_bigs is used inside GendJSF, hence calling GendJSF before prePowMod_dJSF
 	lendJSF = GendJSF(d, r, dJSF);
+	prePowMod_dJSF(d, tmp, y, P, gl_bigs);
 	R->len = 1; R->w[0] = 1;
 	for (i = lendJSF - 1; i >= 0; i--) {
 		idx = I0;
@@ -102,12 +96,11 @@ void powmod_dJSF(int d, big *y, big *r, big P, big &R)
 			idx -= tmp * dJSF[j][i];
 		}
 		mulmod(R, R, P, R);
-		if (idx != I0) mulmod(R, plist[idx], P, R);
+		if (idx != I0) mulmod(R, gl_bigs[idx], P, R);
 	}
 	
 	for (i = 0; i < d; i++) delete[] dJSF[i];
 	delete[] dJSF;
-	for (i = 0; i < tmp; i++) mirkill(plist[i]);
 }
 
 void test_correctness_GendJSF(big P, csprng &Rng)
@@ -134,7 +127,7 @@ void test_correctness_GendJSF(big P, csprng &Rng)
 	cout << lendJSF << endl;
 	
 	for (int i = 0; i < d; i++) {
-		x2->len = 1; x2->w[0] = 0;
+		x2 = mirvar(0);
 		cout << "JSF[" << i << "]: ";
 		for (int j = lendJSF - 1; j >= 0; j--) {
 			sftbit(x2, 1, x2);
@@ -144,15 +137,15 @@ void test_correctness_GendJSF(big P, csprng &Rng)
 		cout << endl;
 		cotnum(x[i], stdout);
 		cotnum(x2, stdout);
+		mirkill(x2);
 	}
 	
-
 	for (int i = 0; i < d; i++) {
 		mirkill(x[i]);
 		delete[] dJSF[i];
 	}
 	delete[] dJSF;
-	mirkill(x2); mirkill(k);
+	mirkill(k);
 }
 
 void test_HammingWeight_dJSF(big P, csprng &Rng)
@@ -273,4 +266,5 @@ void test_powmoddJSF(big P, csprng &Rng)
 	mirkill(k);mirkill(g);
 	mirkill(Z); mirkill(Z1); mirkill(Z2);
 }
+
 

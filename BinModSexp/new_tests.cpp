@@ -34,8 +34,9 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			min1 = (min1 < dur1) ? min1 : dur1;
 
 			// JSF2
-			startTimer(&timer2);
 			ShamirDecomposit(k, a, b, X, Y, P);
+			startTimer(&timer2);
+			//ShamirDecomposit(k, a, b, X, Y, P);
 			//powmod2_Bin(X, a, Y, b, P, R2);		// R2 = X^a * Y^b mod P
 			powmod_JSF(X, a, Y, b, P, R2);		// R2 = X^a * Y^b mod P
 			//powmod2(X, a, Y, b, P, R2);
@@ -44,30 +45,33 @@ void compares(int len, big P, csprng &Rng, Result &res)
 			min2 = (min2 < dur2) ? min2 : dur2;
 
 			// JSF3
+			ShamirDecomposit3(k, g, r, y, P);
 			startTimer(&timer3);
 			//ShamirDecomposit3(k, g, r, y, P);
 			//powmod3_Bin(r, y, P, R3);			// R3 = y1^r1 * y2^r2 * y3^r3
-			//powmod_dJSF(3, y, r, P, R3);
+			powmod_dJSF(3, y, r, P, R3);
 			//powmodn(3, y, r, P, R3);
 			stopTimer(&timer3);
 			dur3 = getTickCount(&timer3);
 			min3 = (min3 < dur3) ? min3 : dur3;
 
 			// JSF4
+			ShamirDecomposit_n(4, k, g, r, y, P);
 			startTimer(&timer4);
 			//ShamirDecomposit_n(4, k, g, r, y, P);
 			//powmodn_Bin(4, r, y, P, R4);		// R4 = y1^r1 * ...* y4^r4
-			//powmod_dJSF(4, y, r, P, R4);
+			powmod_dJSF(4, y, r, P, R4);
 			//powmodn(4, y, r, P, R4);
 			stopTimer(&timer4);
 			dur4 = getTickCount(&timer4);
 			min4 = (min4 < dur4) ? min4 : dur4;
 
 			// JSF5
+			ShamirDecomposit_n(5, k, g, r, y, P);
 			startTimer(&timer5);
 			//ShamirDecomposit_n(5, k, g, r, y, P);
 			//powmodn_Bin(5, r, y, P, R5);
-			//powmod_dJSF(5, y, r, P, R5);
+			powmod_dJSF(5, y, r, P, R5);
 			//powmodn(5, y, r, P, R5);
 			stopTimer(&timer5);
 			dur5 = getTickCount(&timer5);
@@ -75,7 +79,7 @@ void compares(int len, big P, csprng &Rng, Result &res)
 
 			// lib1
 			startTimer(&timer6);
-			//ShamirDecomposit_n(4, k, g, r, y, P);
+			//ShamirDecomposit_n(3, k, g, r, y, P);
 			//powmodn(4, y, r, P, R);
 			powmod(g, k, P, R);
 			stopTimer(&timer6);
@@ -114,10 +118,11 @@ void compares(int len, big P, csprng &Rng, Result &res)
 }
 
 #define NUM_OF_P 5
-void printcompares_bin(Result res[NUM_OF_P + 1], int *m)
+void printcompares(Result res[NUM_OF_P + 1], int *m)
 {
 	const int ilib = 5;
-	res[NUM_OF_P].p[0] = 100;
+
+	for (int i = 0; i <= NUM_OF_P; i++) res[i].p[0] = 100;
 
 	for (int i = 1; i <= ilib; i++) {
 		res[NUM_OF_P].p[i] = res[0].p[i] + res[1].p[i]
